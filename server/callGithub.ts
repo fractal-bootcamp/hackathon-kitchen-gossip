@@ -9,11 +9,28 @@ const getRepos = (usernames: string[]): string[] => {
 
 const getRecentCommitList = async (
   repoName: string,
-  timeSpan?: number
+  timeSpan: number = 4
 ): Promise<string[]> => {
-  // call github
-  // each string in response should be a commit reference id
-  return [];
+  // take timeSpan value in HOURS
+  // convert it to milliseconds
+  const sinceDate = new Date(
+    Date.now() - timeSpan * 60 * 60 * 1000
+  ).toISOString();
+  const githubUrl = `https://api.github.com/repos/${repoName}/commits?since=${sinceDate}`;
+
+  try {
+    const response = await fetch(githubUrl);
+    if (!response.ok) {
+      throw new Error(
+        "FAILED TO GET RESPONSE FROM GITHUB: " + response.statusText
+      );
+    }
+    const commits = await response.json();
+    return commits.map((commit) => commit.sha);
+  } catch (error) {
+    console.error("ERROR: could not parse commits from response");
+    return [];
+  }
 };
 
 const getCommitSummary = async (commitId: string): Promise<CommitSummary> => {
