@@ -1,5 +1,5 @@
-import { sampleCommitSummary } from "./data/dummyData";
-import { CommitSummary } from "./types/CommitSummary";
+import { sampleCommitSummary } from "../data/dummyData";
+import { CommitSummary } from "../types/CommitSummary";
 
 const usernames: string[] = ["yablochko8", "dxren", "absentuser"];
 
