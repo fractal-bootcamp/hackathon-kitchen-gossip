@@ -115,7 +115,7 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   const commitSummaries: CommitSummary[] = []
 
   for (const ownerSlashRepo of arrayOfRepos) {
-    await sleep(SLEEPS.medium)
+    await sleep(SLEEPS.githubApiSleep)
     const commitIds = await getRecentCommitList(ownerSlashRepo)
     if (!commitIds?.length) {
       console.error("No commits found for repo", ownerSlashRepo)
@@ -124,7 +124,7 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
 
     let count = 0
     for (const commit of commitIds) {
-      await sleep(SLEEPS.medium)
+      await sleep(SLEEPS.githubApiSleep)
       const newSummary = await getCommitSummary(commit, ownerSlashRepo)
       commitSummaries.push(newSummary)
       console.log("commit", { count: ++count, commit })

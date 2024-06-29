@@ -1,6 +1,8 @@
+import { AppConfig } from "../config/AppConfig"
+
 export const SLEEPS = {
   short: 1000,
-  medium: 1200,
+  githubApiSleep: AppConfig.githubApiSleep,
   long: 10000,
 }
 

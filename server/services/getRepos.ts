@@ -37,7 +37,7 @@ const getOneUserRepos = async (username: string): Promise<string[]> => {
 export const getAllRepos = async (usernames: string[]): Promise<string[]> => {
   let allRepos: string[] = []
   for (const username of usernames) {
-    await sleep(SLEEPS.medium)
+    await sleep(SLEEPS.githubApiSleep)
     const thisUsersRepos = await getOneUserRepos(username)
     allRepos = [...allRepos, ...thisUsersRepos]
   }
