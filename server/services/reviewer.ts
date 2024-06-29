@@ -3,7 +3,7 @@ import type { GithubStatus, GithubStatusList } from "../types/shared"
 import { reviewPrompt } from "../data/prompts"
 import { getEnv } from "../utils/getEnv"
 import { getRecentCommits } from "./callGithub"
-import { CommitSummary } from "../types/CommitSummary"
+import { CommitSummary, CommitsByUser } from "../types/CommitSummary"
 import _ from "lodash"
 
 export function summarizeStatus(statusList: GithubStatusList) {
@@ -45,29 +45,40 @@ export function transformStatus(status: GithubStatus): string {
   return output
 }
 
-export async function reviewCommits(
-  statusList: GithubStatusList
-): Promise<string> {
+function reviewUserCommits(CommitsByUser: CommitsByUser) {
+  let commitCount = CommitsByUser.commits.length
+  return `User: ${CommitsByUser.user} has ${commitCount} commits.`
+}
+
+async function evaluateCommits(): Promise<string> {
   const opts: ClientOptions = {
     apiKey: getEnv("OPENAI_API_KEY"),
   }
   const openai = new OpenAI(opts)
 
-  const statusText = statusList.map(transformStatus).join("\n")
-  console.log("statusText:", statusText)
-
   const completion = await openai.chat.completions.create({
     messages: [
       { role: "system", content: reviewPrompt },
-      { role: "user", content: statusText },
+      { role: "user", content: "testing" },
     ],
     model: "gpt-3.5-turbo",
   })
 
   const response = completion.choices[0]
   const text = response.message.content
-  console.log("result:", { text })
   return text || "no response"
+}
+
+export async function reviewCommits(commits: CommitsByUser[]): Promise<string> {
+  const reviews: string[] = []
+
+  for (let cl of commits) {
+    const review = reviewUserCommits(cl)
+    reviews.push(review)
+  }
+
+  console.log("result:", reviews)
+  return reviews.join("\n")
 }
 
 function getUniqueUsers(commits: CommitSummary[]) {
@@ -76,7 +87,7 @@ function getUniqueUsers(commits: CommitSummary[]) {
   return uniqueUsers
 }
 
-function getCommitsByUser(commits: CommitSummary[]) {
+function getCommitsByUser(commits: CommitSummary[]): CommitsByUser[] {
   const users = getUniqueUsers(commits)
 
   let commitsByUser: any[] = []
@@ -97,11 +108,13 @@ export async function getReviewStatus(): Promise<any> {
   const users = getUniqueUsers(commits)
 
   const commitsByUser = getCommitsByUser(commits)
+  const reviews = await reviewCommits(commitsByUser)
 
   const status = {
     commits,
     users,
     commitsByUser,
+    reviews,
   }
   console.log("getReviewStatus:", status)
 

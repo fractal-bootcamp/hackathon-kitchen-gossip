@@ -7,4 +7,10 @@ export type CommitSummary = {
   filesChangedNum: number
   filesChangedNames?: string
   actualChanges?: string
+  comment?: string
+}
+
+export type CommitsByUser = {
+  user: string
+  commits: CommitSummary[]
 }
