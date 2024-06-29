@@ -11,19 +11,42 @@ type CommitSummary = {
   filesChanged: number;
   linesAdded: number;
   linesRemoved: number;
-  // actualChanges: CommitChangeBlob
+  actualChanges?: string;
 };
 
 const now = new Date();
 
-const sampleCommitSummary = {
+const sampleCommitSummary: CommitSummary = {
   user: "dxren",
   time: now,
-  message: "hellow",
+  message: "integrated slack bot wooooh",
+  filesChanged: 1,
+  linesAdded: 55,
+  linesRemoved: 66,
+};
+
+const sampleCommitSummary2: CommitSummary = {
+  user: "yabochk8",
+  time: now,
+  message: "broke all my tests and had to start again",
+  filesChanged: 2,
+  linesAdded: 77,
+  linesRemoved: 166,
+};
+
+const sampleCommitSummary3: CommitSummary = {
+  user: "dxren",
+  time: now,
+  message: "turns out the slack bot",
   filesChanged: 4,
   linesAdded: 55,
   linesRemoved: 66,
 };
+export const sampleCommitSummaries = [
+  sampleCommitSummary,
+  sampleCommitSummary2,
+  sampleCommitSummary3,
+];
 
 const getRecentCommitList = async (
   repoName: string,
