@@ -13,6 +13,7 @@
     "bun": "^1.1.17",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "lodash": "^4.17.21",
     "openai": "^4.52.2"
   },
   "devDependencies": {
