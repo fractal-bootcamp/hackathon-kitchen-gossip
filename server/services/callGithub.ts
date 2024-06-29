@@ -1,6 +1,7 @@
 import { sampleCommitSummary } from "../data/dummyData"
 import { CommitSummary } from "../types/CommitSummary"
 import { getRepos } from "./getRepos"
+import { sampleCommits } from "../data/sampleCommits"
 
 const usernames: string[] = ["yablochko8", "dxren", "absentuser"]
 
@@ -78,9 +79,21 @@ const getCommitSummary = async (
   }
 }
 
-export const getRecentCommits = async (): Promise<CommitSummary[]> => {
-  const arrayOfRepos = getRepos(usernames)
+export type CommitOpts = {
+  mock: boolean
+}
 
+export const getRecentCommits = async (
+  opts: CommitOpts = {
+    mock: true,
+  }
+): Promise<CommitSummary[]> => {
+  if (opts.mock) {
+    return sampleCommits
+  }
+
+  const userNames = usernames
+  const arrayOfRepos = getRepos(userNames)
   const commitSummaries: CommitSummary[] = []
 
   for (const ownerSlashRepo of arrayOfRepos) {

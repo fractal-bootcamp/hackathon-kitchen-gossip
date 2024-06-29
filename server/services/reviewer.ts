@@ -74,10 +74,15 @@ export async function getReviewStatus(): Promise<any> {
   //   cooking: ["one", "two", "three"],
   // }
 
-  const review = await getRecentCommits()
-  const users = review.map((commit) => commit.user)
+  const commits = await getRecentCommits({ mock: true })
+  const users = commits.map((commit) => commit.user)
   const uniqueUsers = new Set(users)
-  console.log("uniqueUsers:", uniqueUsers)
+  const status = {
+    users: uniqueUsers,
+    userCount: uniqueUsers.size,
+    commits,
+  }
+  console.log("getReviewStatus:", status)
 
-  return review
+  return status
 }

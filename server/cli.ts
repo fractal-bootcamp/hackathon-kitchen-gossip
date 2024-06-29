@@ -3,10 +3,11 @@ import { getReviewStatus } from "./services/reviewer"
 
 async function main() {
   const cmd = process.argv[2]
+  const mock = true
   console.log("cli")
   switch (cmd) {
     case "getCommits":
-      const commits = await getRecentCommits()
+      const commits = await getRecentCommits({ mock })
       console.log(commits)
       break
 
