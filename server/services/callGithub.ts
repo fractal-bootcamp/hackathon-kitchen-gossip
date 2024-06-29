@@ -108,13 +108,14 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
 
   // const arrayOfRepos = await getAllRepos(usernames)
   const arrayOfRepos = [
+    "fractal-bootcamp/unigroovers.grooviverse",
     "fractal-bootcamp/hackathon-kitchen-gossip",
-    // "fractal-bootcamp/unigroovers.grooviverse",
   ]
 
   const commitSummaries: CommitSummary[] = []
 
   for (const ownerSlashRepo of arrayOfRepos) {
+    await sleep(SLEEPS.medium)
     const commitIds = await getRecentCommitList(ownerSlashRepo)
     if (!commitIds?.length) {
       console.error("No commits found for repo", ownerSlashRepo)
@@ -127,6 +128,9 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
       const newSummary = await getCommitSummary(commit, ownerSlashRepo)
       commitSummaries.push(newSummary)
       console.log("commit", { count: ++count, commit })
+      if (count > AppConfig.maxCommitsPerRepo) {
+        break
+      }
     }
   }
 

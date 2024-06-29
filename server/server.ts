@@ -63,11 +63,11 @@ async function init() {
 
     const gossip = await generateKitchenGossip(reviewStatus.reviews)
 
-    await say(`## Reviews Status\n${reviewStatus.reviews}`)
-    await say({
-      channel: "#kitchen-gossip",
-      text: reviewStatus.reviews,
-    })
+    // await say(`## Reviews Status\n${reviewStatus.reviews}`)
+    // await say({
+    //   channel: "#kitchen-gossip",
+    //   text: reviewStatus.reviews,
+    // })
     await say({
       channel: "#kitchen-gossip",
       text: "Here is the latest kitchen gossip!",

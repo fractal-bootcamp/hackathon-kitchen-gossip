@@ -1,6 +1,6 @@
 export const SLEEPS = {
   short: 1000,
-  medium: 6000,
+  medium: 1200,
   long: 10000,
 }
 
