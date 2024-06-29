@@ -16,7 +16,7 @@ const getOneUserRepos = async (username: string): Promise<string[]> => {
     const response = await fetch(url, headerObject);
 
     if (!response.ok) {
-      throw new Error("you suck");
+      throw new Error("Failed to fetch repositories for user: ${username}");
     }
     const repos = await response.json();
     return repos
