@@ -2,6 +2,7 @@ import OpenAI, { ClientOptions } from "openai"
 import type { GithubStatus, GithubStatusList } from "../types/shared"
 import { reviewPrompt } from "../data/prompts"
 import { getEnv } from "../utils/getEnv"
+import { getRecentCommits } from "./callGithub"
 
 export function summarizeStatus(statusList: GithubStatusList) {
   const userName = statusList.map((status) => status.user)
@@ -65,4 +66,18 @@ export async function reviewCommits(
   const text = response.message.content
   console.log("result:", { text })
   return text || "no response"
+}
+
+export async function getReviewStatus(): Promise<any> {
+  // const review = {
+  //   text: "review text",
+  //   cooking: ["one", "two", "three"],
+  // }
+
+  const review = await getRecentCommits()
+  const users = review.map((commit) => commit.user)
+  const uniqueUsers = new Set(users)
+  console.log("uniqueUsers:", uniqueUsers)
+
+  return review
 }

@@ -21,6 +21,9 @@ const getRecentCommitList = async (
   try {
     const response = await fetch(githubUrl)
     if (!response.ok) {
+      console.error(
+        "FAILED TO GET RESPONSE FROM GITHUB: " + response.statusText
+      )
       throw new Error(
         "FAILED TO GET RESPONSE FROM GITHUB: " + response.statusText
       )
@@ -28,7 +31,7 @@ const getRecentCommitList = async (
     const commits = await response.json()
     return commits.map((commit) => commit.sha)
   } catch (error) {
-    console.error("ERROR: could not parse commits from response")
+    console.error("ERROR: could not parse commits from response", error)
     return []
   }
 }
@@ -67,12 +70,13 @@ const getCommitSummary = async (
   try {
     const response = await fetch(commitUrl)
     if (!response.ok) {
+      console.error("ERROR GETTING COMMIT INFO", { response })
       throw new Error("ERROR GETTING COMMIT INFO")
     }
     const commitData = await response.json()
     return parseCommitInfo(commitData)
   } catch (error) {
-    console.error("Error fetching commit summary")
+    console.error("Error fetching commit summary", { error, ownerSlashRepo })
     return sampleCommitSummary
   }
 }
@@ -95,5 +99,4 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
 }
 
 // const pleaseWork = await getRecentCommits()
-
 // console.log(pleaseWork)
