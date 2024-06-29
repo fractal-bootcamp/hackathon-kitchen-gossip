@@ -1,52 +1,11 @@
+import { sampleCommitSummary } from "./data/dummyData";
+import { CommitSummary } from "./types/CommitSummary";
+
 const usernames: string[] = ["yablochko8", "dxren", "absentuser"];
 
 const getRepos = (usernames: string[]): string[] => {
   return ["fractal-bootcamp/hackathon-kitchen-gossip"];
 };
-
-type CommitSummary = {
-  user: string;
-  time: Date;
-  message: string;
-  filesChanged: number;
-  linesAdded: number;
-  linesRemoved: number;
-  actualChanges?: string;
-};
-
-const now = new Date();
-
-const sampleCommitSummary: CommitSummary = {
-  user: "dxren",
-  time: now,
-  message: "integrated slack bot wooooh",
-  filesChanged: 1,
-  linesAdded: 55,
-  linesRemoved: 66,
-};
-
-const sampleCommitSummary2: CommitSummary = {
-  user: "yabochk8",
-  time: now,
-  message: "broke all my tests and had to start again",
-  filesChanged: 2,
-  linesAdded: 77,
-  linesRemoved: 166,
-};
-
-const sampleCommitSummary3: CommitSummary = {
-  user: "dxren",
-  time: now,
-  message: "turns out the slack bot",
-  filesChanged: 4,
-  linesAdded: 55,
-  linesRemoved: 66,
-};
-export const sampleCommitSummaries = [
-  sampleCommitSummary,
-  sampleCommitSummary2,
-  sampleCommitSummary3,
-];
 
 const getRecentCommitList = async (
   repoName: string,
