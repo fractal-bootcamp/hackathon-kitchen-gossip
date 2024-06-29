@@ -1,16 +1,35 @@
 import express from "express"
 import cors from "cors"
 import { mount } from "./routes/status"
+import { App, ExpressReceiver } from "@slack/bolt"
+import { getEnv } from "./utils/getEnv"
 
-export const PORT = 4101
-
-const app = express()
-
-app.use(express.json())
-app.use(cors())
+// const app = express()
 
 async function init() {
-  app.get("/", async (req, res) => {
+  const receiver = new ExpressReceiver({
+    signingSecret: getEnv("SLACK_SIGNING_SECRET"),
+  })
+  const port = parseInt(getEnv("PORT"))
+  const slackApp = new App({
+    token: process.env.SLACK_BOT_TOKEN,
+    signingSecret: process.env.SLACK_SIGNING_SECRET,
+    // socketMode: true, // add this
+    appToken: process.env.SLACK_APP_TOKEN, // add this
+    port,
+    receiver: receiver,
+  })
+
+  receiver.app.use(express.json())
+  receiver.app.use(cors())
+
+  slackApp.message("hello", async ({ message, say }) => {
+    // say() sends a message to the channel where the event was triggered
+    // <@${message.user}>!
+    console.log("message", message)
+    await say(`Hey there `)
+  })
+  receiver.app.get("/", async (req, res) => {
     console.log("GET endpoint called.")
     res.json({ message: "Hello from the server" })
   })
@@ -19,17 +38,17 @@ async function init() {
 
   const storedValues: string[] = []
 
-  app.post("/newmessage", async (req, res) => {
+  receiver.app.post("/newmessage", async (req, res) => {
     console.log("POST endpoint called.")
     const newMessage = req.body.message
     storedValues.push(newMessage)
     res.json({ messages: storedValues })
   })
 
-  mount(app)
+  mount(receiver.app)
 
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
+  receiver.app.listen(port, () => {
+    console.log(`Server running on port ${port}`)
   })
 }
 
