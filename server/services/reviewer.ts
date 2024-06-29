@@ -58,7 +58,7 @@ export async function reviewCommits(commits: CommitsByUser[]): Promise<string> {
   }
 
   console.log("result:", reviews)
-  const results = reviews.join("\n")
+  const results = reviews.join("\n\n")
   return results
 }
 

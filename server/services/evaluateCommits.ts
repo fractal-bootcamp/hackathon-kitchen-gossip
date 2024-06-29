@@ -1,5 +1,5 @@
 import OpenAI, { ClientOptions } from "openai"
-import { reviewUserCommits } from "../data/prompts"
+import { reviewUserCommits3 } from "../data/prompts"
 import { getEnv } from "../utils/getEnv"
 import { CommitsByUser } from "../types/CommitSummary"
 
@@ -18,7 +18,7 @@ export async function evaluateCommits(
 
   const completion = await openai.chat.completions.create({
     messages: [
-      { role: "system", content: reviewUserCommits },
+      { role: "system", content: reviewUserCommits3 },
       { role: "user", content: text },
     ],
     model: "gpt-3.5-turbo",
