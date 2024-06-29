@@ -44,7 +44,10 @@ const getRecentCommitList = async (
   }
 };
 
-const parseCommitInfo = (commitData: any): CommitSummary => {
+const parseCommitInfo = (
+  commitData: any,
+  ownerSlashRepo: string
+): CommitSummary => {
   const filesChanged = commitData.files.length;
   const linesAdded = commitData.files.reduce(
     (sum: number, file: any) => sum + file.additions,
@@ -57,6 +60,7 @@ const parseCommitInfo = (commitData: any): CommitSummary => {
 
   const returnObj: CommitSummary = {
     user: commitData.commit.author.name,
+    repo: ownerSlashRepo,
     time: new Date(commitData.commit.author.date),
     message: commitData.commit.message,
     linesAdded: linesAdded,
@@ -82,7 +86,7 @@ const getCommitSummary = async (
       throw new Error("ERROR GETTING COMMIT INFO");
     }
     const commitData = await response.json();
-    return parseCommitInfo(commitData);
+    return parseCommitInfo(commitData, ownerSlashRepo);
   } catch (error) {
     console.error("Error fetching commit summary", { error, ownerSlashRepo });
     return sampleCommitSummary;
