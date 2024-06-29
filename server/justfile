@@ -7,16 +7,17 @@ set export
 default:
   @just --list
 
-dev:
-  bun --watch server.ts
-
-getCommits:
-  bun cli.ts getCommits
-
-getReview:
-  bun cli.ts getReview
-
 cls:
     # echo "\033[H\033[J"
     # tput reset
     clear && printf '\e[3J'
+
+dev:
+  bun --watch server.ts
+
+getCommits: cls
+  bun cli.ts getCommits
+
+getReview: cls
+  bun cli.ts getReview
+

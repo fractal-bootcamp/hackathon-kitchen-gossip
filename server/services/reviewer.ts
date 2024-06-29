@@ -3,6 +3,8 @@ import type { GithubStatus, GithubStatusList } from "../types/shared"
 import { reviewPrompt } from "../data/prompts"
 import { getEnv } from "../utils/getEnv"
 import { getRecentCommits } from "./callGithub"
+import { CommitSummary } from "../types/CommitSummary"
+import _ from "lodash"
 
 export function summarizeStatus(statusList: GithubStatusList) {
   const userName = statusList.map((status) => status.user)
@@ -68,16 +70,40 @@ export async function reviewCommits(
   return text || "no response"
 }
 
+function getUniqueUsers(commits: CommitSummary[]) {
+  const users = commits.map((commit) => commit.user)
+  const uniqueUsers = _.uniq(users)
+  return uniqueUsers
+}
+
+function getCommitsByUser(commits: CommitSummary[]) {
+  const users = getUniqueUsers(commits)
+
+  let commitsByUser: any[] = []
+  for (let user of users) {
+    const cm = commits.filter((commit) => commit.user === user)
+    commitsByUser.push({ user, commits: cm })
+  }
+
+  return commitsByUser
+}
+
 export async function getReviewStatus(): Promise<any> {
   // const review = {
   //   text: "review text",
   //   cooking: ["one", "two", "three"],
   // }
+  const commits = await getRecentCommits({ mock: true })
+  const users = getUniqueUsers(commits)
 
-  const review = await getRecentCommits()
-  const users = review.map((commit) => commit.user)
-  const uniqueUsers = new Set(users)
-  console.log("uniqueUsers:", uniqueUsers)
+  const commitsByUser = getCommitsByUser(commits)
 
-  return review
+  const status = {
+    commits,
+    users,
+    commitsByUser,
+  }
+  console.log("getReviewStatus:", status)
+
+  return status
 }
