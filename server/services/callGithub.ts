@@ -115,5 +115,5 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   return commitSummaries;
 };
 
-// const pleaseWork = await getRecentCommits();
-// console.log(pleaseWork);
+const pleaseWork = await getRecentCommits();
+console.log(pleaseWork);

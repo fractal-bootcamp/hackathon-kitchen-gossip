@@ -30,6 +30,6 @@ export const getAllRepos = async (usernames: string[]): Promise<string[]> => {
   return outputArray;
 };
 
-const testData = await getAllRepos(["yablochko8", "fractal-bootcamp"]);
+// const testData = await getAllRepos(["yablochko8", "fractal-bootcamp"]);
 
-console.log(testData);
+// console.log(testData);
