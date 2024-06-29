@@ -16,6 +16,7 @@ const getOneUserRepos = async (username: string): Promise<string[]> => {
   ).toISOString()
 
   try {
+    console.warn("GH CALL getRecentCommitList", { url })
     const response = await fetch(url, headerObject)
 
     if (!response.ok) {

@@ -24,6 +24,7 @@ const getRecentCommitList = async (
   const gitHubToken = getEnv("GITHUB_AUTH_KEY")
 
   try {
+    console.warn("GH CALL getRecentCommitList", { githubUrl })
     const response = await fetch(githubUrl, {
       headers: {
         Authorization: `Bearer ${gitHubToken}`,
@@ -81,6 +82,7 @@ const getCommitSummary = async (
   const commitUrl = `https://api.github.com/repos/${ownerSlashRepo}/commits/${commitId}`
 
   try {
+    console.warn("GH CALL getRecentCommitList", { commitUrl })
     const response = await fetch(commitUrl)
     if (!response.ok) {
       console.error("ERROR GETTING COMMIT INFO", { response })
@@ -104,8 +106,11 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
     return sampleCommits
   }
 
-  const arrayOfRepos = await getAllRepos(usernames)
-  // const arrayOfRepos = ["fractal-bootcamp/hackathon-kitchen-gossip"];
+  // const arrayOfRepos = await getAllRepos(usernames)
+  const arrayOfRepos = [
+    "fractal-bootcamp/hackathon-kitchen-gossip",
+    // "fractal-bootcamp/unigroovers.grooviverse",
+  ]
 
   const commitSummaries: CommitSummary[] = []
 

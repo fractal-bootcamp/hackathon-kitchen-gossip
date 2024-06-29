@@ -18,7 +18,7 @@
 // }
 
 // Function to generate the Block Kit JSON for the kitchen gossip
-export async function generateKitchenGossip(): Array<any> {
+export async function generateKitchenGossip(reviews: text): Array<any> {
   return [
     {
       type: "header",
@@ -44,21 +44,7 @@ export async function generateKitchenGossip(): Array<any> {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*Dorothy's Gourmet API* :knife_fork_plate:\nCooked up a fresh API in Flask, garnished it with OAuth, served with a side of frontend tweaks!",
-      },
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: "*Josh's Quick Recipe Tweak* :male-cook::scroll:\nAdded a pinch of text to README.md. Voilà!",
-      },
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: "*DC's Juicy SQL Server* :grapefruit: :banana:\nJuiced his way through a new SQL server, looks tasty!",
+        text: reviews,
       },
     },
     {
@@ -76,21 +62,21 @@ export async function generateKitchenGossip(): Array<any> {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*:first_place_medal: Dorothy*\n5 PRs & 55 commits!",
+        text: "*:first_place_medal: DCsan*\n5 PRs & 55 commits!",
       },
     },
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*:second_place_medal: Dorothy*\n3 PRs & 33 commits!",
+        text: "*:second_place_medal: yabCommits*\n3 PRs & 33 commits!",
       },
     },
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*:third_place_medal: Dorothy*\n2 PRs & 2 commits!",
+        text: "*:third_place_medal: Hedeaux*\n2 PRs & 2 commits!",
       },
     },
   ]

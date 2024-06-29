@@ -61,7 +61,7 @@ async function init() {
     const reviewStatus: ReviewStatus = await getReviewStatus()
     // await postText(reviewStatus.reviews)
 
-    const gossip = await generateKitchenGossip()
+    const gossip = await generateKitchenGossip(reviewStatus.reviews)
 
     await say(`## Reviews Status\n${reviewStatus.reviews}`)
     await say({
