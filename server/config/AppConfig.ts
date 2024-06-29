@@ -1,3 +1,4 @@
 export const AppConfig = {
-  mock: true,
+  // mock: true,
+  mock: false,
 }
