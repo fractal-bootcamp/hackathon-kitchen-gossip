@@ -1,11 +1,13 @@
 // status check
 
 import { getStatus } from "../services/github"
+import { reviewCommits } from "../services/reviewer"
 
 export function mount(app) {
   app.get("/api/status", async (req, res) => {
-    const status = await getStatus()
+    const githubStatus = await getStatus()
+    const review = await reviewCommits(githubStatus)
     console.log("STATUS called")
-    res.json({ message: "status", status })
+    res.json({ message: "status", result: review })
   })
 }
