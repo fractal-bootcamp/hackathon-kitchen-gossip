@@ -14,7 +14,7 @@ const getOneUserRepos = async (username: string): Promise<string[]> => {
       throw new Error("you suck");
     }
     const repos = await response.json();
-    return repos.map((repo) => repo);
+    return repos.map((repo) => repo.full_name);
   } catch (error) {
     console.log("ERRROR: problems here", error);
     return [];
@@ -30,28 +30,6 @@ export const getAllRepos = async (usernames: string[]): Promise<string[]> => {
   return outputArray;
 };
 
-// export const getAllRepos = async (usernames: string[]): Promise<string[]> => {
-//   //insert logic here to get a list of repos that a user is a member of
-//   const usernamelist = usernames
+const testData = await getAllRepos(["yablochko8", "fractal-bootcamp"]);
 
-//   usernamelist.map((username) => {
-//     const fetchRepos = async (username: string): Promise<string[]> => {
-//       try {
-//         const reponse = await fetch(`https://api.github.com/users/${username}/repos`, {
-//           headers: {
-//             Authorization: `Bearer ${gitHubToken}`,
-//           },
-//         });
-//         if (!reponse.ok) {
-//           throw new Error("failed to fetch repos for user ${username}");
-//         }
-//         const data = await reponse.json();
-//         return data.map((repo) => repo)
-//       } catch (error) {
-//         console.log(error);
-//         return [];
-//       }
-//     }
-//   })
-
-// };
+console.log(testData);

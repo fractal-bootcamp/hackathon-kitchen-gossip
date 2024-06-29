@@ -7,7 +7,7 @@ import { getAllRepos } from "./getRepos";
 
 dotenv.config();
 
-const usernames: string[] = ["yablochko8", "dxren", "absentuser"];
+const usernames: string[] = ["yablochko8", "dxren", "fractal-bootcamp"];
 
 export const gitHubToken = process.env.GITHUB_AUTH_KEY;
 
@@ -100,7 +100,6 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
 
   const arrayOfRepos = await getAllRepos(usernames);
   // const arrayOfRepos = ["fractal-bootcamp/hackathon-kitchen-gossip"];
-  // const arrayOfRepos = getRepos(userNames)
 
   const commitSummaries: CommitSummary[] = [];
 
