@@ -20,11 +20,7 @@ export type GithubStatus = {
 
 export type GithubStatusList = GithubStatus[]
 
-export type ReviewItem = {
-  user: string
-  pass: number
-  fail: number
-  comment: string
+export type ReviewStatus = {
+  reviews: string
+  users: string[]
 }
-
-export type ReviewList = ReviewItem[]

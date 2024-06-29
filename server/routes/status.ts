@@ -1,22 +1,18 @@
 // status check
 
-import { getStatus } from "../services/github"
-import {
-  getReviewStatus,
-  reviewCommits,
-  summarizeStatus,
-} from "../services/reviewer"
+import { getReviewStatus } from "../services/reviewer"
 import { postText } from "../services/slack"
+import { ReviewStatus } from "../types/shared"
 
 export function mount(app) {
   app.get("/api/status", async (req, res) => {
-    const review = await getReviewStatus()
-
+    const reviewStatus: ReviewStatus = await getReviewStatus()
+    await postText(reviewStatus.reviews)
     // await postText(review.text)
     console.log("STATUS called")
     res.json({
       message: "status",
-      review,
+      reviewStatus,
     })
   })
 }

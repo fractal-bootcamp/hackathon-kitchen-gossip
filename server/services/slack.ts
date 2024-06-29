@@ -1,5 +1,7 @@
+import { getEnv } from "../utils/getEnv"
+
 export async function postText(text: string) {
-  const url = "https://hooks.slack.com/services/your-webhook-url"
+  const url = getEnv("SLACK_WEBHOOK")
 
   const payload = {
     channel: "#kitchen-gossip",
@@ -18,5 +20,7 @@ export async function postText(text: string) {
 
   if (!response.ok) {
     throw new Error("Failed to post to Slack")
+  } else {
+    console.log("Posted to Slack", response.status)
   }
 }

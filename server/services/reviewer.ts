@@ -1,13 +1,14 @@
-import type { GithubStatus, GithubStatusList } from "../types/shared"
+import type {
+  GithubStatus,
+  GithubStatusList,
+  ReviewStatus,
+} from "../types/shared"
 import { getRecentCommits } from "./callGithub"
 import { CommitSummary, CommitsByUser } from "../types/CommitSummary"
 import _ from "lodash"
 import { evaluateCommits } from "./evaluateCommits"
 
 export function summarizeStatus(statusList: GithubStatusList) {
-  const userName = statusList.map((status) => status.user)
-  const uniqueNames = new Set(userName)
-
   const userResults = statusList.reduce((acc, status) => {
     if (acc[status.user]) {
       acc[status.user].push(status.pass)
@@ -43,15 +44,15 @@ export function transformStatus(status: GithubStatus): string {
   return output
 }
 
-function reviewUserCommits(CommitsByUser: CommitsByUser) {
-  let commitCount = CommitsByUser.commits.length
+export function reviewUserCommits(CommitsByUser: CommitsByUser) {
+  const commitCount = CommitsByUser.commits.length
   return `User: ${CommitsByUser.user} has ${commitCount} commits.`
 }
 
 export async function reviewCommits(commits: CommitsByUser[]): Promise<string> {
   const reviews: string[] = []
 
-  for (let cl of commits) {
+  for (const cl of commits) {
     const userReview = await evaluateCommits(cl)
     reviews.push(userReview)
   }
@@ -70,8 +71,8 @@ function getUniqueUsers(commits: CommitSummary[]) {
 function getCommitsByUser(commits: CommitSummary[]): CommitsByUser[] {
   const users = getUniqueUsers(commits)
 
-  let commitsByUser: any[] = []
-  for (let user of users) {
+  const commitsByUser: CommitsByUser[] = []
+  for (const user of users) {
     const cm = commits.filter((commit) => commit.user === user)
     commitsByUser.push({ user, commits: cm })
   }
@@ -79,7 +80,7 @@ function getCommitsByUser(commits: CommitSummary[]): CommitsByUser[] {
   return commitsByUser
 }
 
-export async function getReviewStatus(): Promise<any> {
+export async function getReviewStatus(): Promise<ReviewStatus> {
   // const review = {
   //   text: "review text",
   //   cooking: ["one", "two", "three"],
@@ -88,7 +89,7 @@ export async function getReviewStatus(): Promise<any> {
   const users = getUniqueUsers(commits)
 
   const commitsByUser = getCommitsByUser(commits)
-  const reviews = await reviewCommits(commitsByUser)
+  const reviews: string = await reviewCommits(commitsByUser)
 
   const status = {
     // commits,
