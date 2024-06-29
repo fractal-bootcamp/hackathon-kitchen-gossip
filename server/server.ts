@@ -21,8 +21,8 @@ async function init() {
   })
   await slackApp.start()
 
-  receiver.app.use(express.json())
-  receiver.app.use(cors())
+  // receiver.app.use(express.json())
+  // receiver.app.use(cors())
 
   slackApp.message("hello", async ({ message, say }) => {
     // say() sends a message to the channel where the event was triggered
@@ -30,10 +30,10 @@ async function init() {
     console.log("message", message)
     await say(`Hey there `)
   })
-  receiver.app.get("/", async (req, res) => {
-    console.log("GET endpoint called.")
-    res.json({ message: "Hello from the server" })
-  })
+  // receiver.app.get("/", async (req, res) => {
+  //   console.log("GET endpoint called.")
+  //   res.json({ message: "Hello from the server" })
+  // })
 
   // comment
 
@@ -54,7 +54,7 @@ async function init() {
     await respond(`yoyo ${command.text}`)
   })
 
-  mount(receiver.app)
+  // mount(receiver.app)
 
   const currentTime = new Date().toTimeString()
   const msg = `The current time is ${currentTime}`
