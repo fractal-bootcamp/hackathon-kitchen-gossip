@@ -1,9 +1,9 @@
 import { sampleCommitSummary } from "../data/dummyData"
 import { CommitSummary } from "../types/CommitSummary"
-import { getRepos } from "./getRepos"
 import { sampleCommits } from "../data/sampleCommits"
-
+import { AppConfig } from "../config/AppConfig"
 import dotenv from "dotenv"
+import { getRepos } from "./getRepos"
 
 dotenv.config()
 
@@ -93,12 +93,8 @@ export type CommitOpts = {
   mock: boolean
 }
 
-export const getRecentCommits = async (
-  opts: CommitOpts = {
-    mock: true,
-  }
-): Promise<CommitSummary[]> => {
-  if (opts.mock) {
+export const getRecentCommits = async (): Promise<CommitSummary[]> => {
+  if (AppConfig.mock) {
     return sampleCommits
   }
 

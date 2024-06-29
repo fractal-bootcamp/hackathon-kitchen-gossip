@@ -93,7 +93,7 @@ export async function getReviewStatus(): Promise<any> {
   //   text: "review text",
   //   cooking: ["one", "two", "three"],
   // }
-  const commits = await getRecentCommits({ mock: true })
+  const commits = await getRecentCommits()
   const users = getUniqueUsers(commits)
 
   const commitsByUser = getCommitsByUser(commits)
