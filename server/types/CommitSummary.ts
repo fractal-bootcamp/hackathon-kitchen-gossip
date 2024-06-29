@@ -2,8 +2,9 @@ export type CommitSummary = {
   user: string;
   time: Date;
   message: string;
-  filesChanged: number;
   linesAdded: number;
   linesRemoved: number;
+  filesChangedNum: number;
+  filesChangedNames?: string;
   actualChanges?: string;
 };

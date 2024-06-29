@@ -48,10 +48,11 @@ const parseCommitInfo = (commitData: any): CommitSummary => {
     user: commitData.commit.author.name,
     time: new Date(commitData.commit.author.date),
     message: commitData.commit.message,
-    filesChanged: filesChanged,
     linesAdded: linesAdded,
     linesRemoved: linesRemoved,
-    // actualChanges: commitData.files.map((file) => file.filename).join(", "),
+    filesChangedNum: filesChanged,
+    filesChangedNames: commitData.files.map((file) => file.filename).join(", "),
+    // actualChanges: add in later
   };
 
   return returnObj;
