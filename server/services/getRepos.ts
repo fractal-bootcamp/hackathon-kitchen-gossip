@@ -1,20 +1,29 @@
 import { gitHubToken } from "./callGithub";
 
 const getOneUserRepos = async (username: string): Promise<string[]> => {
-  const url = `https://api.github.com/users/${username}/repos`;
+  const url = `https://api.github.com/users/${username}/repos?sort=updated`;
   const headerObject = {
     headers: {
       Authorization: `Bearer ${gitHubToken}`,
     },
   };
+
+  const twelveHoursAgo = new Date(
+    Date.now() - 12 * 60 * 60 * 1000
+  ).toISOString();
+
   try {
     const response = await fetch(url, headerObject);
 
     if (!response.ok) {
-      throw new Error("you suck");
+      throw new Error("Failed to fetch repositories for user: ${username}");
     }
     const repos = await response.json();
-    return repos.map((repo) => repo.full_name);
+    return repos
+      .filter(
+        (repo) => new Date(repo.updated_at).toISOString() > twelveHoursAgo
+      )
+      .map((repo) => repo.full_name);
   } catch (error) {
     console.log("ERRROR: problems here", error);
     return [];
@@ -30,6 +39,6 @@ export const getAllRepos = async (usernames: string[]): Promise<string[]> => {
   return outputArray;
 };
 
-// const testData = await getAllRepos(["yablochko8", "fractal-bootcamp"]);
+const testData = await getAllRepos(["yablochko8", "fractal-bootcamp"]);
 
-// console.log(testData);
+console.log(testData);
