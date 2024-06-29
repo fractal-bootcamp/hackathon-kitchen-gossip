@@ -1,0 +1,116 @@
+[
+  {
+    "sha": "6ede89d0794feb8f2685db3d7eb91702d7354ffa",
+    "node_id": "C_kwDOMPvfttoAKDZlZGU4OWQwNzk0ZmViOGYyNjg1ZGIzZDdlYjkxNzAyZDczNTRmZmE",
+    "commit": {
+      "author": {
+        "name": "hendeaux",
+        "email": "50344006+Hendersonajardimj@users.noreply.github.com",
+        "date": "2024-06-29T14:27:06Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-06-29T14:27:06Z"
+      },
+      "message": "Update README.md",
+      "tree": {
+        "sha": "ffe944ad307f394e8cedc1df446816a6b3533605",
+        "url": "https://api.github.com/repos/fractal-bootcamp/hackathon-kitchen-gossip/git/trees/ffe944ad307f394e8cedc1df446816a6b3533605"
+      },
+      "url": "https://api.github.com/repos/fractal-bootcamp/hackathon-kitchen-gossip/git/commits/6ede89d0794feb8f2685db3d7eb91702d7354ffa",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmgBm6CRC1aQ7uu5UhlAAAB9wQAHbBTO//Nvm/TuhMLkmXG3ZN\n7IH0RF/ThFDm4HRwxPBaJbmikFKntlfwPI/oetRVVs25Wt7NNfT7Xy0GfbkeXnQc\nVXA4o5HQjSK4a28pIv8fm8702KaioVEs8lQljrBGjtL8Jk2VqqjpUBN4qMpYezfE\n8gzLYs2axs8G/K55QTBa/69eRNKiQ+r0VCMIVnFhqtmdn5ALE1RzD2GE2lYsqutB\nTDSy7fmFRAPXz+ZSnrhmSpID7lZSn9wKSCLQKvV6hSLtqS+W2SKqNTPPFiSOXiL7\n2LYKOEgr0nwi6cHhdpOFkHZeEuWBlyYjaDIPagagEPrv0jJJHnXagBuY9e9uspZP\nDVHOghPNRTtQlvsW7WNei2tLdeZDI02RHYXAOR53JyBmHSzRvbMFxRz3IUrt7Z0L\niJLzDpO3NYAYQAvoNezwhtQQzyAffxuHumMwsuR3M2nsc9OgLINZM0ON3251qAXb\nbAi6Gd+Xy76fyo/64EVb3r/VrLYQaWEdU2E1/+Xupc1c/9K3NEuHTRLDJspHpZHP\nwscoCORLiPlH/1ND7OUkX+NzbZDs61oCNl7Az0wmpBL3k/kADHOVEZf1E1v3/Ydl\nmy5F/VDMqXHVCQCs8e+O800N+6RJh2l4Sa6DI1munF2qfmFNtF7i+zzrng9HseHx\nMCB8rcpYvH6EUhx+KAVm\n=aXBh\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree ffe944ad307f394e8cedc1df446816a6b3533605\nparent e549e29f5f38b64ad6b77ee08bd79f4e3b0ba0d3\nauthor hendeaux <50344006+Hendersonajardimj@users.noreply.github.com> 1719671226 -0400\ncommitter GitHub <noreply@github.com> 1719671226 -0400\n\nUpdate README.md"
+      }
+    },
+    "url": "https://api.github.com/repos/fractal-bootcamp/hackathon-kitchen-gossip/commits/6ede89d0794feb8f2685db3d7eb91702d7354ffa",
+    "html_url": "https://github.com/fractal-bootcamp/hackathon-kitchen-gossip/commit/6ede89d0794feb8f2685db3d7eb91702d7354ffa",
+    "comments_url": "https://api.github.com/repos/fractal-bootcamp/hackathon-kitchen-gossip/commits/6ede89d0794feb8f2685db3d7eb91702d7354ffa/comments",
+    "author": {
+      "login": "Hendersonajardimj",
+      "id": 50344006,
+      "node_id": "MDQ6VXNlcjUwMzQ0MDA2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50344006?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Hendersonajardimj",
+      "html_url": "https://github.com/Hendersonajardimj",
+      "followers_url": "https://api.github.com/users/Hendersonajardimj/followers",
+      "following_url": "https://api.github.com/users/Hendersonajardimj/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Hendersonajardimj/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Hendersonajardimj/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Hendersonajardimj/subscriptions",
+      "organizations_url": "https://api.github.com/users/Hendersonajardimj/orgs",
+      "repos_url": "https://api.github.com/users/Hendersonajardimj/repos",
+      "events_url": "https://api.github.com/users/Hendersonajardimj/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Hendersonajardimj/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e549e29f5f38b64ad6b77ee08bd79f4e3b0ba0d3",
+        "url": "https://api.github.com/repos/fractal-bootcamp/hackathon-kitchen-gossip/commits/e549e29f5f38b64ad6b77ee08bd79f4e3b0ba0d3",
+        "html_url": "https://github.com/fractal-bootcamp/hackathon-kitchen-gossip/commit/e549e29f5f38b64ad6b77ee08bd79f4e3b0ba0d3"
+      }
+    ]
+  },
+  {
+    "sha": "e549e29f5f38b64ad6b77ee08bd79f4e3b0ba0d3",
+    "node_id": "C_kwDOMPvfttoAKGU1NDllMjlmNWYzOGI2NGFkNmI3N2VlMDhiZDc5ZjRlM2IwYmEwZDM",
+    "commit": {
+      "author": {
+        "name": "yab",
+        "email": "hello@factions.ai",
+        "date": "2024-06-29T14:11:32Z"
+      },
+      "committer": {
+        "name": "yab",
+        "email": "hello@factions.ai",
+        "date": "2024-06-29T14:11:32Z"
+      },
+      "message": "init",
+      "tree": {
+        "sha": "d33baa7f63fc0a91124d3a26914de69f40630c52",
+        "url": "https://api.github.com/repos/fractal-bootcamp/hackathon-kitchen-gossip/git/trees/d33baa7f63fc0a91124d3a26914de69f40630c52"
+      },
+      "url": "https://api.github.com/repos/fractal-bootcamp/hackathon-kitchen-gossip/git/commits/e549e29f5f38b64ad6b77ee08bd79f4e3b0ba0d3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/fractal-bootcamp/hackathon-kitchen-gossip/commits/e549e29f5f38b64ad6b77ee08bd79f4e3b0ba0d3",
+    "html_url": "https://github.com/fractal-bootcamp/hackathon-kitchen-gossip/commit/e549e29f5f38b64ad6b77ee08bd79f4e3b0ba0d3",
+    "comments_url": "https://api.github.com/repos/fractal-bootcamp/hackathon-kitchen-gossip/commits/e549e29f5f38b64ad6b77ee08bd79f4e3b0ba0d3/comments",
+    "author": null,
+    "committer": null,
+    "parents": []
+  }
+]
