@@ -104,18 +104,23 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   }
 
   const arrayOfRepos = await getAllRepos(usernames)
-  // const arrayOfRepos = ["fractal-bootcamp/hackathon-kitchen-gossip"];
+  // const arrayOfRepos = ["fractal-bootcamp/hackathon-kitchen-gossip"]
 
   const commitSummaries: CommitSummary[] = []
 
   for (const ownerSlashRepo of arrayOfRepos) {
     const commitIds = await getRecentCommitList(ownerSlashRepo)
+    if (!commitIds?.length) {
+      console.error("No commits found for repo", ownerSlashRepo)
+      continue
+    }
 
     for (const commit of commitIds) {
       const newSummary = await getCommitSummary(commit, ownerSlashRepo)
       commitSummaries.push(newSummary)
     }
   }
+
   console.log("commitSummaries", commitSummaries)
   return commitSummaries
 }

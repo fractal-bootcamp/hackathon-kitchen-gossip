@@ -10,7 +10,7 @@ import { sendMessage } from "./services/slack/sendMessage"
 
 import { ReviewStatus } from "./types/shared"
 import { getReviewStatus } from "./services/reviewer"
-
+import { generateKitchenGossip } from "./services/slack/bot"
 // const app = express()
 
 async function init() {
@@ -61,7 +61,14 @@ async function init() {
     const reviewStatus: ReviewStatus = await getReviewStatus()
     // await postText(reviewStatus.reviews)
 
+    const gossip = await generateKitchenGossip()
+
     await say(`## Reviews Status\n${reviewStatus.reviews}`)
+    await say({
+      channel: "#kitchen-gossip",
+      text: "Here is the latest kitchen gossip!",
+      blocks: gossip,
+    })
   })
 
   // mount(receiver.app)
