@@ -33,12 +33,47 @@ const getRecentCommitList = async (
   }
 };
 
-const getCommitSummary = async (commitId: string): Promise<CommitSummary> => {
-  // do another call to github
-  // parse out response
-  // may need to inject in a parseCommitInfo function here
-  // return using type
-  return sampleCommitSummary;
+const parseCommitInfo = (commitData: any): CommitSummary => {
+  const filesChanged = commitData.files.length;
+  const linesAdded = commitData.files.reduce(
+    (sum: number, file: any) => sum + file.additions,
+    0
+  );
+  const linesRemoved = commitData.files.reduce(
+    (sum: number, file: any) => sum + file.deletions,
+    0
+  );
+
+  const returnObj: CommitSummary = {
+    user: commitData.commit.author.name,
+    time: new Date(commitData.commit.author.date),
+    message: commitData.commit.message,
+    filesChanged: filesChanged,
+    linesAdded: linesAdded,
+    linesRemoved: linesRemoved,
+    // actualChanges: commitData.files.map((file) => file.filename).join(", "),
+  };
+
+  return returnObj;
+};
+
+const getCommitSummary = async (
+  commitId: string,
+  ownerSlashRepo: string
+): Promise<CommitSummary> => {
+  const commitUrl = `https://api.github.com/repos/${ownerSlashRepo}/commits/${commitId}`;
+
+  try {
+    const response = await fetch(commitUrl);
+    if (!response.ok) {
+      throw new Error("ERROR GETTING COMMIT INFO");
+    }
+    const commitData = await response.json();
+    return parseCommitInfo(commitData);
+  } catch (error) {
+    console.error("Error fetching commit summary");
+    return sampleCommitSummary;
+  }
 };
 
 export const getRecentCommits = async (): Promise<CommitSummary[]> => {
@@ -46,11 +81,11 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
 
   const commitSummaries: CommitSummary[] = [];
 
-  for (const repo of arrayOfRepos) {
-    const commitIds = await getRecentCommitList(repo);
+  for (const ownerSlashRepo of arrayOfRepos) {
+    const commitIds = await getRecentCommitList(ownerSlashRepo);
 
     for (const commit of commitIds) {
-      const newSummary = await getCommitSummary(commit);
+      const newSummary = await getCommitSummary(commit, ownerSlashRepo);
       commitSummaries.push(newSummary);
     }
   }
@@ -58,4 +93,6 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   return commitSummaries;
 };
 
-// yab@luimbp ~ % curl -i https://api.github.com/repos/fractal-bootcamp/hackathon-kitchen-gossip/git/commits/6ede89d0794feb8f2685db3d7eb91702d7354ffa
+const pleaseWork = await getRecentCommits();
+
+console.log(pleaseWork);
