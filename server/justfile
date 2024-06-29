@@ -4,3 +4,5 @@
 dev:
   bun --watch server.ts
 
+getCommits:
+  bun cli.ts getCommits

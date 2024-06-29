@@ -1,11 +1,11 @@
-import { sampleCommitSummary } from "./data/dummyData";
-import { CommitSummary } from "./types/CommitSummary";
+import { sampleCommitSummary } from "../data/dummyData"
+import { CommitSummary } from "../types/CommitSummary"
 
-const usernames: string[] = ["yablochko8", "dxren", "absentuser"];
+const usernames: string[] = ["yablochko8", "dxren", "absentuser"]
 
 const getRepos = (usernames: string[]): string[] => {
-  return ["fractal-bootcamp/hackathon-kitchen-gossip"];
-};
+  return ["fractal-bootcamp/hackathon-kitchen-gossip"]
+}
 
 const getRecentCommitList = async (
   repoName: string,
@@ -15,34 +15,34 @@ const getRecentCommitList = async (
   // convert it to milliseconds
   const sinceDate = new Date(
     Date.now() - timeSpan * 60 * 60 * 1000
-  ).toISOString();
-  const githubUrl = `https://api.github.com/repos/${repoName}/commits?since=${sinceDate}`;
+  ).toISOString()
+  const githubUrl = `https://api.github.com/repos/${repoName}/commits?since=${sinceDate}`
 
   try {
-    const response = await fetch(githubUrl);
+    const response = await fetch(githubUrl)
     if (!response.ok) {
       throw new Error(
         "FAILED TO GET RESPONSE FROM GITHUB: " + response.statusText
-      );
+      )
     }
-    const commits = await response.json();
-    return commits.map((commit) => commit.sha);
+    const commits = await response.json()
+    return commits.map((commit) => commit.sha)
   } catch (error) {
-    console.error("ERROR: could not parse commits from response");
-    return [];
+    console.error("ERROR: could not parse commits from response")
+    return []
   }
-};
+}
 
 const parseCommitInfo = (commitData: any): CommitSummary => {
-  const filesChanged = commitData.files.length;
+  const filesChanged = commitData.files.length
   const linesAdded = commitData.files.reduce(
     (sum: number, file: any) => sum + file.additions,
     0
-  );
+  )
   const linesRemoved = commitData.files.reduce(
     (sum: number, file: any) => sum + file.deletions,
     0
-  );
+  )
 
   const returnObj: CommitSummary = {
     user: commitData.commit.author.name,
@@ -53,47 +53,47 @@ const parseCommitInfo = (commitData: any): CommitSummary => {
     filesChangedNum: filesChanged,
     filesChangedNames: commitData.files.map((file) => file.filename).join(", "),
     // actualChanges: add in later
-  };
+  }
 
-  return returnObj;
-};
+  return returnObj
+}
 
 const getCommitSummary = async (
   commitId: string,
   ownerSlashRepo: string
 ): Promise<CommitSummary> => {
-  const commitUrl = `https://api.github.com/repos/${ownerSlashRepo}/commits/${commitId}`;
+  const commitUrl = `https://api.github.com/repos/${ownerSlashRepo}/commits/${commitId}`
 
   try {
-    const response = await fetch(commitUrl);
+    const response = await fetch(commitUrl)
     if (!response.ok) {
-      throw new Error("ERROR GETTING COMMIT INFO");
+      throw new Error("ERROR GETTING COMMIT INFO")
     }
-    const commitData = await response.json();
-    return parseCommitInfo(commitData);
+    const commitData = await response.json()
+    return parseCommitInfo(commitData)
   } catch (error) {
-    console.error("Error fetching commit summary");
-    return sampleCommitSummary;
+    console.error("Error fetching commit summary")
+    return sampleCommitSummary
   }
-};
+}
 
 export const getRecentCommits = async (): Promise<CommitSummary[]> => {
-  const arrayOfRepos = getRepos(usernames);
+  const arrayOfRepos = getRepos(usernames)
 
-  const commitSummaries: CommitSummary[] = [];
+  const commitSummaries: CommitSummary[] = []
 
   for (const ownerSlashRepo of arrayOfRepos) {
-    const commitIds = await getRecentCommitList(ownerSlashRepo);
+    const commitIds = await getRecentCommitList(ownerSlashRepo)
 
     for (const commit of commitIds) {
-      const newSummary = await getCommitSummary(commit, ownerSlashRepo);
-      commitSummaries.push(newSummary);
+      const newSummary = await getCommitSummary(commit, ownerSlashRepo)
+      commitSummaries.push(newSummary)
     }
   }
 
-  return commitSummaries;
-};
+  return commitSummaries
+}
 
-const pleaseWork = await getRecentCommits();
+// const pleaseWork = await getRecentCommits()
 
-console.log(pleaseWork);
+// console.log(pleaseWork)
