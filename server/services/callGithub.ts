@@ -22,8 +22,6 @@ const getRecentCommitList = async (
 
   const token = process.env.GITHUB_AUTH_KEY;
 
-  console.log("TOKEN IS", token);
-
   try {
     const response = await fetch(githubUrl, {
       headers: {
@@ -92,7 +90,8 @@ const getCommitSummary = async (
 };
 
 export const getRecentCommits = async (): Promise<CommitSummary[]> => {
-  const arrayOfRepos = getRepos(usernames);
+  // const arrayOfRepos = await getRepos(usernames);
+  const arrayOfRepos = ["fractal-bootcamp/hackathon-kitchen-gossip"];
 
   const commitSummaries: CommitSummary[] = [];
 
