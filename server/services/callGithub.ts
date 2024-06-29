@@ -4,16 +4,15 @@ import { sampleCommits } from "../data/sampleCommits"
 import { AppConfig } from "../config/AppConfig"
 import dotenv from "dotenv"
 import { getAllRepos } from "./getRepos"
-
+import { getEnv } from "../utils/getEnv"
+import { SLEEPS, sleep } from "../utils/sleep"
 dotenv.config()
 
 const usernames: string[] = ["yablochko8", "dxren", "fractal-bootcamp", "dcsan"]
 
-export const gitHubToken = process.env.GITHUB_AUTH_KEY
-
 const getRecentCommitList = async (
   repoName: string,
-  timeSpan: number = 4
+  timeSpan: number = 12
 ): Promise<string[]> => {
   // take timeSpan value in HOURS
   // convert it to milliseconds
@@ -21,6 +20,8 @@ const getRecentCommitList = async (
     Date.now() - timeSpan * 60 * 60 * 1000
   ).toISOString()
   const githubUrl = `https://api.github.com/repos/${repoName}/commits?since=${sinceDate}`
+
+  const gitHubToken = getEnv("GITHUB_AUTH_KEY")
 
   try {
     const response = await fetch(githubUrl, {
@@ -104,7 +105,7 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   }
 
   const arrayOfRepos = await getAllRepos(usernames)
-  // const arrayOfRepos = ["fractal-bootcamp/hackathon-kitchen-gossip"]
+  // const arrayOfRepos = ["fractal-bootcamp/hackathon-kitchen-gossip"];
 
   const commitSummaries: CommitSummary[] = []
 
@@ -115,9 +116,12 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
       continue
     }
 
+    let count = 0
     for (const commit of commitIds) {
+      await sleep(SLEEPS.medium)
       const newSummary = await getCommitSummary(commit, ownerSlashRepo)
       commitSummaries.push(newSummary)
+      console.log("commit", { count: ++count, commit })
     }
   }
 
