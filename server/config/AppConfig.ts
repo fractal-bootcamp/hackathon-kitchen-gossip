@@ -1,5 +1,5 @@
 export const AppConfig = {
-  // mock: true,
-  mock: false,
+  mock: true,
+  // mock: false,
   maxCommitsPerRepo: 4,
 }

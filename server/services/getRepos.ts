@@ -39,7 +39,6 @@ export const getAllRepos = async (usernames: string[]): Promise<string[]> => {
   for (const username of usernames) {
     await sleep(SLEEPS.medium)
     const thisUsersRepos = await getOneUserRepos(username)
-    await sleep(SLEEPS.medium)
     allRepos = [...allRepos, ...thisUsersRepos]
   }
   console.log("outputArray:", allRepos)
