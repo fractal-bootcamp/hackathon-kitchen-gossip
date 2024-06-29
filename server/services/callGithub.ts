@@ -1,11 +1,8 @@
 import { sampleCommitSummary } from "../data/dummyData";
 import { CommitSummary } from "../types/CommitSummary";
+import { getRepos } from "./getRepos";
 
 const usernames: string[] = ["yablochko8", "dxren", "absentuser"];
-
-const getRepos = (usernames: string[]): string[] => {
-  return ["fractal-bootcamp/hackathon-kitchen-gossip"];
-};
 
 const getRecentCommitList = async (
   repoName: string,
