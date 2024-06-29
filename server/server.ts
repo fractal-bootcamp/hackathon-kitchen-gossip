@@ -13,6 +13,8 @@ app.get("/", async (req, res) => {
   res.json({ message: "Hello from the server" });
 });
 
+// comment
+
 const storedValues: string[] = [];
 
 app.post("/newmessage", async (req, res) => {
