@@ -1,35 +1,42 @@
-import express from "express"
-import cors from "cors"
-import { mount } from "./routes/status"
-import { App, ExpressReceiver } from "@slack/bolt"
+// import express from "express"
+// import cors from "cors"
+// import { mount } from "./routes/status"
+import {
+  App,
+  // ExpressReceiver
+} from "@slack/bolt"
 import { getEnv } from "./utils/getEnv"
 import { sendMessage } from "./services/slack/sendMessage"
+
+import { ReviewStatus } from "./types/shared"
+import { getReviewStatus } from "./services/reviewer"
 
 // const app = express()
 
 async function init() {
-  const receiver = new ExpressReceiver({
-    signingSecret: getEnv("SLACK_SIGNING_SECRET"),
-  })
+  // const receiver = new ExpressReceiver({
+  //   signingSecret: getEnv("SLACK_SIGNING_SECRET"),
+  // })
   const port = parseInt(getEnv("PORT"))
   const slackApp = new App({
     token: getEnv("SLACK_BOT_TOKEN"),
     signingSecret: getEnv("SLACK_SIGNING_SECRET"),
     appToken: getEnv("SLACK_APP_TOKEN"),
+    socketMode: true, // add this
     port,
-    receiver: receiver,
+    // receiver: receiver,
   })
   await slackApp.start()
 
   // receiver.app.use(express.json())
   // receiver.app.use(cors())
 
-  slackApp.message("hello", async ({ message, say }) => {
-    // say() sends a message to the channel where the event was triggered
-    // <@${message.user}>!
-    console.log("message", message)
-    await say(`Hey there `)
-  })
+  // slackApp.message("hi", async ({ message, say }) => {
+  //   // say() sends a message to the channel where the event was triggered
+  //   // <@${message.user}>!
+  //   console.log("hi message", message)
+  //   await say(`hola! <@${message.user}>!`)
+  // })
   // receiver.app.get("/", async (req, res) => {
   //   console.log("GET endpoint called.")
   //   res.json({ message: "Hello from the server" })
@@ -37,27 +44,30 @@ async function init() {
 
   // comment
 
-  const storedValues: string[] = []
+  // const storedValues: string[] = []
 
-  receiver.app.post("/newmessage", async (req, res) => {
-    console.log("POST endpoint called.")
-    const newMessage = req.body.message
-    storedValues.push(newMessage)
-    res.json({ messages: storedValues })
-  })
+  // receiver.app.post("/newmessage", async (req, res) => {
+  //   console.log("POST endpoint called.")
+  //   const newMessage = req.body.message
+  //   storedValues.push(newMessage)
+  //   res.json({ messages: storedValues })
+  // })
 
   // The echo command simply echoes on command
-  slackApp.command("/whatscooking", async ({ command, ack, respond }) => {
+  slackApp.command("/whatscooking", async ({ command, ack, say, respond }) => {
     console.log("/whatscooking", command)
     await ack()
+    await respond("cooking...")
+    const reviewStatus: ReviewStatus = await getReviewStatus()
+    // await postText(reviewStatus.reviews)
 
-    await respond(`yoyo ${command.text}`)
+    await say(`## Reviews Status\n${reviewStatus.reviews}`)
   })
 
   // mount(receiver.app)
 
   const currentTime = new Date().toTimeString()
-  const msg = `The current time is ${currentTime}`
+  const msg = `slack app boot at ${currentTime}`
   await sendMessage(msg)
 
   // receiver.app.listen(port, () => {
