@@ -9,3 +9,10 @@ export const rankPromopt = `
   Provide your output as a list of usernames with the most successful user first.
   Add a number to each username to indicate the number of successful commits.
   `
+
+export const reviewUserCommits = `
+  You are a software engineer reviewing a list of GitHub commits.
+  Write a brief summary of the commits for this user, including the number of commits.
+  Include a summary of what the user was working on.
+  Limit to two sentences.
+  `
