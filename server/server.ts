@@ -3,6 +3,7 @@ import cors from "cors"
 import { mount } from "./routes/status"
 import { App, ExpressReceiver } from "@slack/bolt"
 import { getEnv } from "./utils/getEnv"
+import { sendMessage } from "./services/slack/sendMessage"
 
 // const app = express()
 
@@ -12,10 +13,9 @@ async function init() {
   })
   const port = parseInt(getEnv("PORT"))
   const slackApp = new App({
-    token: process.env.SLACK_BOT_TOKEN,
-    signingSecret: process.env.SLACK_SIGNING_SECRET,
-    // socketMode: true, // add this
-    appToken: process.env.SLACK_APP_TOKEN, // add this
+    token: getEnv("SLACK_BOT_TOKEN"),
+    signingSecret: getEnv("SLACK_SIGNING_SECRET"),
+    appToken: getEnv("SLACK_APP_TOKEN"),
     port,
     receiver: receiver,
   })
@@ -46,6 +46,10 @@ async function init() {
   })
 
   mount(receiver.app)
+
+  const currentTime = new Date().toTimeString()
+  const msg = `The current time is ${currentTime}`
+  await sendMessage(msg)
 
   receiver.app.listen(port, () => {
     console.log(`Server running on port ${port}`)
