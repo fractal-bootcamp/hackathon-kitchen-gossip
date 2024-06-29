@@ -1,0 +1,6 @@
+
+
+
+dev:
+  bun --watch server.ts
+

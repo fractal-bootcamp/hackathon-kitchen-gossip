@@ -1,0 +1,4 @@
+{
+  "sha": "abcdef1234567890",
+  // Unique identifier for the commit"commit": {"author": {"name": "Your Name",          // Name of the author"email": "your.email@example.com", // Email of the author"date": "2024-06-28T10:00:00Z"    // Date and time of the commit},"committer": {"name": "Your Name",          // Name of the committer (could be same as author or different)"email": "your.email@example.com", // Email of the committer"date": "2024-06-28T10:00:00Z"    // Date and time of the commit},"message": "Commit message here", // Commit message describing changes"tree": {"sha": "treeSHA1234567890"    // SHA of the tree object associated with the commit},"url": "https://api.github.com/repos/yourusername/repository/commits/abcdef1234567890", // URL to view the commit on GitHub// Other metadata like parents, verification details, etc.},// Additional information like URLs, diffs, stats, etc. depending on API response configuration
+}
