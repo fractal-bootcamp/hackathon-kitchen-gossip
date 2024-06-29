@@ -5,7 +5,7 @@ import { getRepos } from "./getRepos";
 import dotenv from "dotenv";
 import path from "path";
 
-dotenv.config({ path: path.resolve(__dirname, "server", ".env") });
+dotenv.config();
 
 const usernames: string[] = ["yablochko8", "dxren", "absentuser"];
 
