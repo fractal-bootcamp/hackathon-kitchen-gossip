@@ -19,6 +19,7 @@ async function init() {
     port,
     receiver: receiver,
   })
+  await slackApp.start()
 
   receiver.app.use(express.json())
   receiver.app.use(cors())
@@ -45,15 +46,23 @@ async function init() {
     res.json({ messages: storedValues })
   })
 
+  // The echo command simply echoes on command
+  slackApp.command("/whatscooking", async ({ command, ack, respond }) => {
+    console.log("/whatscooking", command)
+    await ack()
+
+    await respond(`yoyo ${command.text}`)
+  })
+
   mount(receiver.app)
 
   const currentTime = new Date().toTimeString()
   const msg = `The current time is ${currentTime}`
   await sendMessage(msg)
 
-  receiver.app.listen(port, () => {
-    console.log(`Server running on port ${port}`)
-  })
+  // receiver.app.listen(port, () => {
+  //   console.log(`Server running on port ${port}`)
+  // })
 }
 
 init()
