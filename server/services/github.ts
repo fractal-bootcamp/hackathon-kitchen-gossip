@@ -1,6 +1,7 @@
-import { githubStatus } from "../data/dummyData"
+import { CommitSummary } from "../types/CommitSummary"
+import { githubStatus, sampleCommitSummaries } from "../data/dummyData"
 import { GithubStatusList } from "../types/shared"
 
-export async function getStatus(opts?: any): Promise<GithubStatusList> {
-  return githubStatus
+export async function getStatus(opts?: any): Promise<CommitSummary[]> {
+  return sampleCommitSummaries
 }

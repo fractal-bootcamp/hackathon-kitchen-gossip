@@ -1,5 +1,5 @@
-import { CommitSummary } from "../types/CommitSummary";
-import { GithubStatusList } from "../types/shared";
+import { CommitSummary } from "../types/CommitSummary"
+import { GithubStatusList } from "../types/shared"
 
 export const githubStatus: GithubStatusList = [
   {
@@ -29,9 +29,9 @@ export const githubStatus: GithubStatusList = [
     branch: "main",
     pass: true,
   },
-];
+]
 
-const now = new Date();
+const now = new Date()
 
 export const sampleCommitSummary: CommitSummary = {
   user: "dxren",
@@ -40,7 +40,7 @@ export const sampleCommitSummary: CommitSummary = {
   filesChanged: 1,
   linesAdded: 55,
   linesRemoved: 66,
-};
+}
 
 const sampleCommitSummary2: CommitSummary = {
   user: "yabochk8",
@@ -49,7 +49,7 @@ const sampleCommitSummary2: CommitSummary = {
   filesChanged: 2,
   linesAdded: 77,
   linesRemoved: 166,
-};
+}
 
 const sampleCommitSummary3: CommitSummary = {
   user: "dxren",
@@ -58,9 +58,10 @@ const sampleCommitSummary3: CommitSummary = {
   filesChanged: 4,
   linesAdded: 55,
   linesRemoved: 66,
-};
-export const sampleCommitSummaries = [
+}
+
+export const sampleCommitSummaries: CommitSummary[] = [
   sampleCommitSummary,
   sampleCommitSummary2,
   sampleCommitSummary3,
-];
+]

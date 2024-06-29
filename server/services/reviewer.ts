@@ -1,6 +1,7 @@
 import OpenAI, { ClientOptions } from "openai"
 import type { GithubStatus, GithubStatusList } from "../types/shared"
 import { reviewPrompt } from "../data/prompts"
+import { getEnv } from "../utils/getEnv"
 
 export function summarizeStatus(statusList: GithubStatusList) {
   const userName = statusList.map((status) => status.user)
@@ -27,6 +28,11 @@ export function summarizeStatus(statusList: GithubStatusList) {
   return userResults
 }
 
+/**
+ * convert status from JSON to plain text to pass to LLM
+ * @param status
+ * @returns
+ */
 export function transformStatus(status: GithubStatus): string {
   const output = `
   user: ${status.user}
@@ -40,7 +46,7 @@ export async function reviewCommits(
   statusList: GithubStatusList
 ): Promise<string> {
   const opts: ClientOptions = {
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: getEnv("OPENAI_API_KEY"),
   }
   const openai = new OpenAI(opts)
 
