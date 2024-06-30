@@ -1,6 +1,6 @@
 import { getEnv } from "../utils/getEnv"
 
-import { SLEEPS, sleep } from "../utils/sleep"
+import { SLEEP_TIMES, sleep } from "../utils/sleep"
 
 const getOneUserRepos = async (username: string): Promise<string[]> => {
   const gitHubToken = getEnv("GITHUB_AUTH_KEY")
@@ -37,7 +37,7 @@ const getOneUserRepos = async (username: string): Promise<string[]> => {
 export const getAllRepos = async (usernames: string[]): Promise<string[]> => {
   let allRepos: string[] = []
   for (const username of usernames) {
-    await sleep(SLEEPS.githubApiSleep)
+    await sleep(SLEEP_TIMES.githubApiSleep)
     const thisUsersRepos = await getOneUserRepos(username)
     allRepos = [...allRepos, ...thisUsersRepos]
   }

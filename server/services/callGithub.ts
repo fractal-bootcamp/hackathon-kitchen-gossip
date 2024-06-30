@@ -1,11 +1,11 @@
+import dotenv from "dotenv"
 import { sampleCommitSummary } from "../data/dummyData"
 import { CommitSummary } from "../types/CommitSummary"
 import { sampleCommits } from "../data/sampleCommits"
 import { AppConfig } from "../config/AppConfig"
-import dotenv from "dotenv"
 import { getAllRepos } from "./getRepos"
 import { getEnv } from "../utils/getEnv"
-import { SLEEPS, sleep } from "../utils/sleep"
+import { SLEEP_TIMES, sleep } from "../utils/sleep"
 dotenv.config()
 
 const usernames: string[] = ["yablochko8", "dxren", "fractal-bootcamp", "dcsan"]
@@ -115,7 +115,7 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   const commitSummaries: CommitSummary[] = []
 
   for (const ownerSlashRepo of arrayOfRepos) {
-    await sleep(SLEEPS.githubApiSleep)
+    await sleep(SLEEP_TIMES.githubApiSleep)
     const commitIds = await getRecentCommitList(ownerSlashRepo)
     if (!commitIds?.length) {
       console.error("No commits found for repo", ownerSlashRepo)
@@ -124,7 +124,7 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
 
     let count = 0
     for (const commit of commitIds) {
-      await sleep(SLEEPS.githubApiSleep)
+      await sleep(SLEEP_TIMES.githubApiSleep)
       const newSummary = await getCommitSummary(commit, ownerSlashRepo)
       commitSummaries.push(newSummary)
       console.log("commit", { count: ++count, commit })
@@ -137,6 +137,3 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   console.log("commitSummaries", commitSummaries)
   return commitSummaries
 }
-
-// const pleaseWork = await getRecentCommits();
-// console.log(pleaseWork);

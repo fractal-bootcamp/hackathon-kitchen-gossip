@@ -1,6 +1,6 @@
 import { AppConfig } from "../config/AppConfig"
 
-export const SLEEPS = {
+export const SLEEP_TIMES = {
   short: 1000,
   githubApiSleep: AppConfig.githubApiSleep,
   long: 10000,
