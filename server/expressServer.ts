@@ -21,13 +21,13 @@ app.post("/express/recent-commits", async (req, res) => {
   console.log("POST request to /express/recent-commits");
   try {
     const recentCommits: CommitSummary[] = await getRecentCommits();
-    const result = recentCommits.map((commit) => ({
-      repo: commit.repo,
-      user: commit.user,
-      message: commit.message,
-      date: commit.time,
-    }));
-    res.json({ commits: result });
+    // const result = recentCommits.map((commit) => ({
+    //   repo: commit.repo,
+    //   user: commit.user,
+    //   message: commit.message,
+    //   date: commit.time,
+    // }));
+    res.json({ commits: recentCommits });
   } catch (error) {
     console.error("Error requesting reviews:", error);
     res.status(500).json({ error: "Failed to fetch reviews." });

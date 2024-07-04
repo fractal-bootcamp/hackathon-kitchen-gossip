@@ -34,7 +34,14 @@ const getRecentCommitsFromServer = async (
 
   const recentCommits = json.commits
   console.log("Server response was:", recentCommits)
-  setValuesFromServer(recentCommits)
+
+  // For debugging / dev:
+  // Transform each commit object into a string
+  // that can be displayed on local app
+  const formattedCommits = recentCommits.map((commit: any) => {
+    return `User: ${commit.user}, Repo: ${commit.repo}, Time: ${commit.time}, Message: ${commit.message}, Lines Added: ${commit.linesAdded}, Lines Removed: ${commit.linesRemoved}, Files Changed: ${commit.filesChangedNum}`;
+  });
+  setValuesFromServer(formattedCommits)
   return recentCommits;
 };
 
