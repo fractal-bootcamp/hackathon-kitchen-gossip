@@ -115,6 +115,66 @@ const getCommitSummary = async (
 /**
  * Calls GitHub to get recent commits.
  */
+export const getCommitsOneRepo = async (
+  ownerSlashRepo: string
+): Promise<CommitSummary[]> => {
+  if (AppConfig.mock) {
+    console.warn("Using mock data");
+    return sampleCommits;
+  }
+
+  console.warn(
+    "ALT METHOD (4 JULY DEV NOTE): Attempting real GitHub API calls..."
+  );
+  const url = `https://api.github.com/repos/${ownerSlashRepo}/commits`;
+
+  try {
+    const response = await fetch(url);
+    const commits = await response.json();
+
+    const commitSummaries: CommitSummary[] = await Promise.all(
+      commits.map(async (commit) => {
+        const commitDetailResponse = await fetch(commit.url);
+        const commitData = await commitDetailResponse.json();
+
+        let linesAdded = 0;
+        let linesRemoved = 0;
+        let filesChanged = 0;
+
+        if (commitData.files) {
+          filesChanged = commitData.files.length;
+          commitData.files.forEach((file) => {
+            linesAdded += file.additions;
+            linesRemoved += file.deletions;
+          });
+        }
+
+        return {
+          user: commitData.commit.author.name,
+          repo: ownerSlashRepo,
+          time: new Date(commitData.commit.author.date),
+          message: commitData.commit.message,
+          linesAdded: linesAdded,
+          linesRemoved: linesRemoved,
+          filesChangedNum: filesChanged,
+          filesChangedNames: commitData.files
+            .map((file) => file.filename)
+            .join(", "),
+        };
+      })
+    );
+
+    return commitSummaries;
+  } catch (error) {
+    console.error("Error fetching commit data:", error);
+  }
+  console.log("SOMETHING HAS GONE WRONG - Returning mock data");
+  return sampleCommits;
+};
+
+/**
+ * Calls GitHub to get recent commits.
+ */
 export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   if (AppConfig.mock) {
     console.warn("Using mock data");
@@ -124,38 +184,34 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
 
   // const arrayOfRepos = await getAllRepos(usernames)
   const arrayOfRepos = [
-    "fractal-bootcamp/hackathon-kitchen-gossip",
+    // "fractal-bootcamp/hackathon-kitchen-gossip",
     "fractal-bootcamp/lui.personal-site",
   ];
 
   const commitSummaries: CommitSummary[] = [];
-
   for (const ownerSlashRepo of arrayOfRepos) {
     console.log("Calling for commits on", ownerSlashRepo);
 
-    await sleep(SLEEP_TIMES.githubApiSleep);
-    // REVIEW THIS....MAY NOT BE HELPFUL ANY MORE...
-
-    const commitIds = await getRecentCommitList(ownerSlashRepo);
-    if (!commitIds?.length) {
+    const moreSummaries = await getCommitsOneRepo(ownerSlashRepo);
+    if (moreSummaries.length) {
+      console.log(
+        `${moreSummaries.length} commits found for ${ownerSlashRepo}`
+      );
+      commitSummaries.push(...moreSummaries);
+    } else {
       console.error("No commits found for repo", ownerSlashRepo);
-      continue;
-    }
-
-    let count = 0;
-    for (const commit of commitIds) {
-      await sleep(SLEEP_TIMES.githubApiSleep);
-      const newSummary = await getCommitSummary(commit, ownerSlashRepo);
-      commitSummaries.push(newSummary);
-      console.log("commit", { count: ++count, commit });
-      if (count > AppConfig.maxCommitsPerRepo) {
-        break;
-      }
     }
   }
 
-  console.log(
-    `Returning a list of ${commitSummaries.length} commitSummary objects.`
+  const maxAgeHrs = 4;
+  console.log(`Removing all commits older than ${maxAgeHrs} hours.`);
+  const maxAgeAgo = new Date(Date.now() - maxAgeHrs * 60 * 60 * 1000);
+  const recentCommitSummaries = commitSummaries.filter(
+    (commit) => commit.time > maxAgeAgo
   );
-  return commitSummaries;
+
+  console.log(
+    `Returning a combined list of ${recentCommitSummaries.length} commitSummary objects.`
+  );
+  return recentCommitSummaries;
 };
