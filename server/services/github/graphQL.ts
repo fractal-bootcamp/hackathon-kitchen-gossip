@@ -1,27 +1,34 @@
 import { CommitSummary } from "../../types/CommitSummary";
 import { getEnv } from "../../utils/getEnv";
 
+/**
+ * Query builder is here: https://docs.github.com/en/graphql/overview/explorer
+ */
 const buildGraphQuery = (owner: string, repo: string): string => {
   const query = `
-    {
-      repository(owner: "${owner}", name: "${repo}") {
-        defaultBranchRef {
-          target {
-            ... on Commit {
-              history(first: 100) {
-                edges {
-                  node {
-                    author {
-                      name
-                      date
-                    }
-                    message
-                    additions
-                    deletions
-                    changedFilesIfAvailable
-                    tree {
-                      entries {
-                        path
+  {
+    repository(owner: "${owner}", name: "${repo}") {
+      refs(refPrefix: "refs/heads/", first: 100) {  # Fetching all branches
+        edges {
+          node {
+            name
+            target {
+              ... on Commit {
+                history(first: 20) {  # Fetching commit history for each branch, "first" seems to be newest
+                  edges {
+                    node {
+                      author {
+                        name
+                        date
+                      }
+                      message
+                      additions
+                      deletions
+                      changedFilesIfAvailable
+                      tree {
+                        entries {
+                          path
+                        }
                       }
                     }
                   }
@@ -32,6 +39,8 @@ const buildGraphQuery = (owner: string, repo: string): string => {
         }
       }
     }
+  }
+  
     `;
   return query;
 };
@@ -55,12 +64,13 @@ export const getCommitsViaGraph = async (
 
     const data = await response.json();
 
-    console.log("getCommitsViaGraph data", data);
+    const commits: CommitSummary[] = [];
 
-    const commits: CommitSummary[] =
-      data.data.repository.defaultBranchRef.target.history.edges.map((edge) => {
-        const commit = edge.node;
-        return {
+    data.data.repository.refs.edges.forEach((refEdge) => {
+      console.log("Parsing from branch:", refEdge.node.name);
+      refEdge.node.target.history.edges.forEach((historyEdge) => {
+        const commit = historyEdge.node;
+        commits.push({
           user: commit.author.name,
           repo: `${owner}/${repo}`,
           time: new Date(commit.author.date),
@@ -71,8 +81,9 @@ export const getCommitsViaGraph = async (
           filesChangedNames: commit.tree.entries
             .map((fileEdge) => fileEdge.path)
             .join(", "),
-        };
+        });
       });
+    });
 
     return commits;
   } catch (error) {

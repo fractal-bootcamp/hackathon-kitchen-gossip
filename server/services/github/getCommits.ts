@@ -123,7 +123,7 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   // const arrayOfRepos = await getAllRepos(usernames)
   const arrayOfRepos = [
     // "fractal-bootcamp/hackathon-kitchen-gossip",
-    "fractal-bootcamp/lui.personal-site",
+    "fractal-bootcamp/hackathon-kitchen-gossip",
     // "fractal-bootcamp/hackathon-kitchen-gossip",
   ];
 
@@ -144,7 +144,7 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
 
   console.log("example commitsummary", commitSummaries[0]);
 
-  const maxAgeHrs = 100;
+  const maxAgeHrs = 12;
   console.log(`Removing all commits older than ${maxAgeHrs} hours.`);
   const maxAgeAgo = new Date(Date.now() - maxAgeHrs * 60 * 60 * 1000);
   const recentCommitSummaries = commitSummaries.filter(
