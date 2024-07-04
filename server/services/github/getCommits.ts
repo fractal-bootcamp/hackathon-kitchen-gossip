@@ -17,13 +17,19 @@ dotenv.config();
 
 /**
  * Calls GitHub to get list of recent commits.
+ * repoName is in the format "owner-name/repo-name"
+ * timeSpan is in hours
  */
-const getRecentCommitList = async (
+const getCommitsOneRepo = async (
   repoName: string,
   timeSpan: number = 12
-): Promise<string[]> => {
-  // take timeSpan value in HOURS
-  // convert it to milliseconds
+): Promise<CommitSummary[]> => {
+  if (AppConfig.mock) {
+    console.warn("Using mock data");
+    return sampleCommits;
+  }
+  console.warn("Attempting real GitHub API calls for commits to:", repoName);
+
   const sinceDate = new Date(
     Date.now() - timeSpan * 60 * 60 * 1000
   ).toISOString();
@@ -31,10 +37,7 @@ const getRecentCommitList = async (
 
   const gitHubToken = getEnv("GITHUB_AUTH_KEY");
 
-  console.log(gitHubToken);
-
   try {
-    console.warn("GH CALL getRecentCommitList", { githubUrl });
     const response = await fetch(githubUrl, {
       headers: {
         Authorization: `Bearer ${gitHubToken}`,
@@ -49,7 +52,16 @@ const getRecentCommitList = async (
       );
     }
     const commits = await response.json();
-    return commits.map((commit) => commit.sha);
+
+    const commitSummaries: CommitSummary[] = [];
+    for (const commit of commits) {
+      console.log("\n\n\n ZZZZZZ \n\n\n");
+      console.log(commit.sha);
+      const newCommitSummary = await detailedCommitInfo(commit, repoName);
+      commitSummaries.push(newCommitSummary);
+    }
+
+    return commitSummaries;
   } catch (error) {
     console.error("ERROR: could not parse commits from response", error);
     return [];
@@ -58,20 +70,29 @@ const getRecentCommitList = async (
 
 /**
  * Takes blob of GitHub response and returns a CommitSummary object.
+ * Unfortunately this DOES actually call Github API every time.
  */
-const parseCommitInfo = (
-  commitData: any,
+const detailedCommitInfo = async (
+  commit: any,
   ownerSlashRepo: string
-): CommitSummary => {
-  const filesChanged = commitData.files.length;
-  const linesAdded = commitData.files.reduce(
-    (sum: number, file: any) => sum + file.additions,
-    0
-  );
-  const linesRemoved = commitData.files.reduce(
-    (sum: number, file: any) => sum + file.deletions,
-    0
-  );
+): Promise<CommitSummary> => {
+  console.log("Parsing CommitInfo, ref:", commit.sha);
+  const commitDetailResponse = await fetch(commit.url);
+  const commitData = await commitDetailResponse.json();
+
+  let linesAdded = 0;
+  let linesRemoved = 0;
+  let filesChanged = 0;
+  let filesChangedNames = "";
+
+  if (commitData.files) {
+    filesChanged = commitData.files.length;
+    commitData.files.forEach((file) => {
+      linesAdded += file.additions;
+      linesRemoved += file.deletions;
+      filesChangedNames += file.filename + ", ";
+    });
+  }
 
   const returnObj: CommitSummary = {
     user: commitData.commit.author.name,
@@ -81,95 +102,11 @@ const parseCommitInfo = (
     linesAdded: linesAdded,
     linesRemoved: linesRemoved,
     filesChangedNum: filesChanged,
-    filesChangedNames: commitData.files.map((file) => file.filename).join(", "),
+    filesChangedNames: filesChangedNames,
     // actualChanges: add in later
   };
 
   return returnObj;
-};
-
-/**
- * Calls GitHub for details of a specific commit.
- */
-const getCommitSummary = async (
-  commitId: string,
-  ownerSlashRepo: string
-): Promise<CommitSummary> => {
-  const commitUrl = `https://api.github.com/repos/${ownerSlashRepo}/commits/${commitId}`;
-
-  try {
-    console.warn("GH CALL getRecentCommitList", { commitUrl });
-    const response = await fetch(commitUrl);
-    if (!response.ok) {
-      console.error("ERROR GETTING COMMIT INFO", { response });
-      throw new Error("ERROR GETTING COMMIT INFO");
-    }
-    const commitData = await response.json();
-    return parseCommitInfo(commitData, ownerSlashRepo);
-  } catch (error) {
-    console.error("Error fetching commit summary", { error, ownerSlashRepo });
-    return sampleCommitSummary;
-  }
-};
-
-/**
- * Calls GitHub to get recent commits.
- */
-export const getCommitsOneRepo = async (
-  ownerSlashRepo: string
-): Promise<CommitSummary[]> => {
-  if (AppConfig.mock) {
-    console.warn("Using mock data");
-    return sampleCommits;
-  }
-
-  console.warn(
-    "ALT METHOD (4 JULY DEV NOTE): Attempting real GitHub API calls..."
-  );
-  const url = `https://api.github.com/repos/${ownerSlashRepo}/commits`;
-
-  try {
-    const response = await fetch(url);
-    const commits = await response.json();
-
-    const commitSummaries: CommitSummary[] = await Promise.all(
-      commits.map(async (commit) => {
-        const commitDetailResponse = await fetch(commit.url);
-        const commitData = await commitDetailResponse.json();
-
-        let linesAdded = 0;
-        let linesRemoved = 0;
-        let filesChanged = 0;
-
-        if (commitData.files) {
-          filesChanged = commitData.files.length;
-          commitData.files.forEach((file) => {
-            linesAdded += file.additions;
-            linesRemoved += file.deletions;
-          });
-        }
-
-        return {
-          user: commitData.commit.author.name,
-          repo: ownerSlashRepo,
-          time: new Date(commitData.commit.author.date),
-          message: commitData.commit.message,
-          linesAdded: linesAdded,
-          linesRemoved: linesRemoved,
-          filesChangedNum: filesChanged,
-          filesChangedNames: commitData.files
-            .map((file) => file.filename)
-            .join(", "),
-        };
-      })
-    );
-
-    return commitSummaries;
-  } catch (error) {
-    console.error("Error fetching commit data:", error);
-  }
-  console.log("SOMETHING HAS GONE WRONG - Returning mock data");
-  return sampleCommits;
 };
 
 /**
@@ -186,6 +123,7 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   const arrayOfRepos = [
     // "fractal-bootcamp/hackathon-kitchen-gossip",
     "fractal-bootcamp/lui.personal-site",
+    // "fractal-bootcamp/hackathon-kitchen-gossip",
   ];
 
   const commitSummaries: CommitSummary[] = [];
