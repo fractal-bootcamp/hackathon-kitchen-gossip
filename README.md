@@ -14,6 +14,38 @@ Adventures for another day.
 
 ==================
 
+# To test using FE interface
+
+```sh
+cd /frontend
+npm install
+npm run dev
+```
+
+and open up Vite localhost, and then for the server...
+
+```sh
+cd /server
+bun --watch expressServer.ts
+```
+
+# To test using command line
+
+E.g. to test getCommits:
+
+```sh
+cd /server
+bun cli.ts getCommits
+```
+
+etc
+
+See `/server/cli.ts` for all options
+
+Tool comes from https://just.systems/
+
+==================
+
 Sample API response from Github:
 
 ```json

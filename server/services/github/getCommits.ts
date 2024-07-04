@@ -6,6 +6,7 @@ import { AppConfig } from "../../config/AppConfig";
 // import { getAllRepos } from "./github/getRepos";
 import { getEnv } from "../../utils/getEnv";
 import { SLEEP_TIMES, sleep } from "../../utils/sleep";
+import { getCommitsViaGraph } from "./graphQL";
 dotenv.config();
 
 // const usernames: string[] = [
@@ -122,7 +123,7 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   // const arrayOfRepos = await getAllRepos(usernames)
   const arrayOfRepos = [
     // "fractal-bootcamp/hackathon-kitchen-gossip",
-    "fractal-bootcamp/lui.personal-site",
+    "fractal-bootcamp/hackathon-kitchen-gossip",
     // "fractal-bootcamp/hackathon-kitchen-gossip",
   ];
 
@@ -130,7 +131,7 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   for (const ownerSlashRepo of arrayOfRepos) {
     console.log("Calling for commits on", ownerSlashRepo);
 
-    const moreSummaries = await getCommitsOneRepo(ownerSlashRepo);
+    const moreSummaries = await getCommitsViaGraph(ownerSlashRepo);
     if (moreSummaries.length) {
       console.log(
         `${moreSummaries.length} commits found for ${ownerSlashRepo}`
@@ -141,7 +142,9 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
     }
   }
 
-  const maxAgeHrs = 4;
+  console.log("example commitsummary", commitSummaries[0]);
+
+  const maxAgeHrs = 12;
   console.log(`Removing all commits older than ${maxAgeHrs} hours.`);
   const maxAgeAgo = new Date(Date.now() - maxAgeHrs * 60 * 60 * 1000);
   const recentCommitSummaries = commitSummaries.filter(

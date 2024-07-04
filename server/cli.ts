@@ -1,4 +1,4 @@
-import { getRecentCommits } from "./services/github/callGithub";
+import { getRecentCommits } from "./services/github/getCommits";
 import { getReviewStatus } from "./services/reviewer";
 
 async function main() {
