@@ -1,6 +1,6 @@
-import { getEnv } from "../utils/getEnv";
+import { getEnv } from "../../utils/getEnv";
 
-import { SLEEP_TIMES, sleep } from "../utils/sleep";
+import { SLEEP_TIMES, sleep } from "../../utils/sleep";
 
 /**
  * Get names of relevant repos for a list of given usernames

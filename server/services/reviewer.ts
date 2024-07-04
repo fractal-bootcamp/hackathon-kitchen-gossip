@@ -3,11 +3,16 @@ import type {
   GithubStatusList,
   ReviewStatus,
 } from "../types/shared";
-import { getRecentCommits } from "./callGithub";
+import { getRecentCommits } from "./github/callGithub";
 import { CommitSummary, CommitsByUser } from "../types/CommitSummary";
 import _ from "lodash";
-import { evaluateCommits } from "./evaluateCommits";
+import { evaluateCommits } from "./openai/evaluateCommits";
 
+/**
+ * Gets list of relevant repos for a signle username.
+ * Fetches most recent list in a single call. Returns
+ * all repos with changes from last 12 hours.
+ */
 export function summarizeStatus(statusList: GithubStatusList) {
   const userResults = statusList.reduce((acc, status) => {
     if (acc[status.user]) {
@@ -44,7 +49,7 @@ export function transformStatus(status: GithubStatus): string {
   return output;
 }
 
-export function reviewUserCommits(CommitsByUser: CommitsByUser) {
+export function reviewUserCommits(CommitsByUser: CommitsByUser): string {
   const commitCount = CommitsByUser.commits.length;
   return `User: ${CommitsByUser.user} has ${commitCount} commits.`;
 }
