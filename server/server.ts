@@ -40,7 +40,7 @@ async function init() {
     await respond("cooking...");
 
     // Get summary of user reviews
-    // I think this calls tons of other functions?
+    // This is the master call that triggers all the other sub calls
     const reviewStatus: ReviewStatus = await getReviewStatus();
     // await postText(reviewStatus.reviews)
 

@@ -3,6 +3,11 @@ import { reviewUserCommits3 } from "../../data/prompts";
 import { getEnv } from "../../utils/getEnv";
 import { CommitsByUser } from "../../types/CommitSummary";
 
+/**
+ * Takes in a username and array of commits.
+ * Passes them to LLM.
+ * Returns LLM-generated review.
+ */
 export async function evaluateCommits(
   commitsByUser: CommitsByUser
 ): Promise<string> {

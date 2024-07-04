@@ -105,6 +105,9 @@ export type CommitOpts = {
   mock: boolean;
 };
 
+/**
+ * Calls GitHub to get recent commits.
+ */
 export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   if (AppConfig.mock) {
     console.warn("Using mock data");
