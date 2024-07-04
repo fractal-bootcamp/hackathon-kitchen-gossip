@@ -3,9 +3,9 @@ import "./App.css";
 
 export const PORT = 4101; // change this to an import before doing anything serious
 
-const serverPath = `http://localhost:${PORT}`;
+const serverPath = `http://localhost:${PORT}/express/heartbeat`;
 
-const getData = async () => {
+const checkHeartbeat = async () => {
   const response = await fetch(`${serverPath}`, {
     method: "GET",
     headers: {
@@ -21,7 +21,7 @@ const postDataAndDisplayResponse = async (
   message: string,
   setValuesFromServer: Function
 ) => {
-  const response = await fetch(`${serverPath}/newmessage`, {
+  const response = await fetch(`${serverPath}/express/request-reviews`, {
     method: "POST",
     body: JSON.stringify({ message }),
     headers: {
@@ -39,9 +39,12 @@ function App() {
   const [submittedValue, setSubmittedValue] = useState("");
   const [valuesFromServer, setValuesFromServer] = useState(["starting data"]);
 
+  const buttonClass = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded";
+
   return (
     <>
-      <button onClick={() => getData()}>Call the GET Endpoint</button>
+      <button className={buttonClass} onClick={() => checkHeartbeat()}>Check server heartbeat</button>
+      <div>Open browser console to see response.</div>
       <br />
       <br />
 
@@ -55,6 +58,7 @@ function App() {
       />
       <br />
       <button
+        className={buttonClass}
         onClick={() =>
           postDataAndDisplayResponse(submittedValue, setValuesFromServer)
         }
