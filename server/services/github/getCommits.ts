@@ -6,6 +6,7 @@ import { AppConfig } from "../../config/AppConfig";
 // import { getAllRepos } from "./github/getRepos";
 import { getEnv } from "../../utils/getEnv";
 import { SLEEP_TIMES, sleep } from "../../utils/sleep";
+import { getCommitsViaGraph } from "./graphQL";
 dotenv.config();
 
 // const usernames: string[] = [
@@ -130,7 +131,7 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
   for (const ownerSlashRepo of arrayOfRepos) {
     console.log("Calling for commits on", ownerSlashRepo);
 
-    const moreSummaries = await getCommitsOneRepo(ownerSlashRepo);
+    const moreSummaries = await getCommitsViaGraph(ownerSlashRepo);
     if (moreSummaries.length) {
       console.log(
         `${moreSummaries.length} commits found for ${ownerSlashRepo}`
