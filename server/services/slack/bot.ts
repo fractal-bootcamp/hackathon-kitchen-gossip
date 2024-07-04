@@ -19,7 +19,7 @@
 
 /**
  * Generates the Block Kit JSON for the kitchen gossip.
- * (returns array of josn objects)
+ * (returns array of JSON objects)
  */
 export async function generateKitchenGossip(reviews: string): Promise<any[]> {
   return [
