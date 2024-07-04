@@ -1,3 +1,19 @@
+How this code is organized:
+
+# /server
+
+Almost everything that matters for now is in here.
+
+# /frontend
+
+Lightweight web app for interacting with server, especially in dev/local environment.
+
+# /database & /docs
+
+Adventures for another day.
+
+==================
+
 Sample API response from Github:
 
 ```json
