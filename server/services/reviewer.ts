@@ -3,7 +3,7 @@ import type {
   GithubStatusList,
   ReviewStatus,
 } from "../types/shared";
-import { getRecentCommits } from "./github/callGithub";
+import { getRecentCommits } from "./github/getCommits";
 import { CommitSummary, CommitsByUser } from "../types/CommitSummary";
 import _ from "lodash";
 import { evaluateCommits } from "./openai/evaluateCommits";

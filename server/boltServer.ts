@@ -25,7 +25,7 @@ async function init() {
     token: getEnv("SLACK_BOT_TOKEN"),
     signingSecret: getEnv("SLACK_SIGNING_SECRET"),
     appToken: getEnv("SLACK_APP_TOKEN"),
-    socketMode: true, // add this? maybe
+    socketMode: false, // add this? maybe
     port,
     // receiver: receiver,
   });
