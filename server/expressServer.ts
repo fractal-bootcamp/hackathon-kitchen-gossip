@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { getReviewStatus } from "./services/reviewer";
 import { ReviewStatus } from "./types/shared";
-import { getRecentCommits } from "./services/github/callGithub";
+import { getRecentCommits } from "./services/github/getCommits";
 import { CommitSummary } from "./types/CommitSummary";
 
 const PORT = process.env.SERVER_PORT;
