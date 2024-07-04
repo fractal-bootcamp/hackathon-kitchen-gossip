@@ -1,5 +1,5 @@
-import { CommitSummary } from "../types/CommitSummary"
-import { GithubStatusList } from "../types/shared"
+import { CommitSummary } from "../types/CommitSummary";
+import { GithubStatusList } from "../types/shared";
 
 export const githubStatus: GithubStatusList = [
   {
@@ -29,39 +29,42 @@ export const githubStatus: GithubStatusList = [
     branch: "main",
     pass: true,
   },
-]
+];
 
-const now = new Date()
+const now = new Date();
 
 export const sampleCommitSummary: CommitSummary = {
   user: "dxren",
   time: now,
   message: "integrated slack bot wooooh",
   filesChangedNum: 1,
+  repo: "fractal-bootcamp/hackathon-kitchen-gossip",
   linesAdded: 55,
   linesRemoved: 66,
-}
+};
 
 const sampleCommitSummary2: CommitSummary = {
   user: "yabochk8",
   time: now,
   message: "broke all my tests and had to start again",
+  repo: "fractal-bootcamp/hackathon-kitchen-gossip",
   filesChangedNum: 2,
   linesAdded: 77,
   linesRemoved: 166,
-}
+};
 
 const sampleCommitSummary3: CommitSummary = {
   user: "dxren",
   time: now,
   message: "turns out the slack bot",
+  repo: "fractal-bootcamp/hackathon-kitchen-gossip",
   filesChangedNum: 4,
   linesAdded: 55,
   linesRemoved: 66,
-}
+};
 
 export const sampleCommitSummaries: CommitSummary[] = [
   sampleCommitSummary,
   sampleCommitSummary2,
   sampleCommitSummary3,
-]
+];

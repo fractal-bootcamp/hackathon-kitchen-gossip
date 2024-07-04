@@ -17,8 +17,11 @@
 //   // Add other properties as needed
 // }
 
-// Function to generate the Block Kit JSON for the kitchen gossip
-export async function generateKitchenGossip(reviews: text): Array<any> {
+/**
+ * Generates the Block Kit JSON for the kitchen gossip.
+ * (returns array of josn objects)
+ */
+export async function generateKitchenGossip(reviews: string): Promise<any[]> {
   return [
     {
       type: "header",
@@ -79,7 +82,7 @@ export async function generateKitchenGossip(reviews: text): Array<any> {
         text: "*:third_place_medal: Hedeaux*\n2 PRs & 2 commits!",
       },
     },
-  ]
+  ];
 }
 
 // Function to post the kitchen gossip message to Slack
