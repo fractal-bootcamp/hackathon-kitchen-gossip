@@ -15,6 +15,9 @@ dotenv.config();
 //   "dcsan",
 // ];
 
+/**
+ * Calls GitHub to get list of recent commits.
+ */
 const getRecentCommitList = async (
   repoName: string,
   timeSpan: number = 12
@@ -27,6 +30,8 @@ const getRecentCommitList = async (
   const githubUrl = `https://api.github.com/repos/${repoName}/commits?since=${sinceDate}`;
 
   const gitHubToken = getEnv("GITHUB_AUTH_KEY");
+
+  console.log(gitHubToken);
 
   try {
     console.warn("GH CALL getRecentCommitList", { githubUrl });
@@ -51,6 +56,9 @@ const getRecentCommitList = async (
   }
 };
 
+/**
+ * Takes blob of GitHub response and returns a CommitSummary object.
+ */
 const parseCommitInfo = (
   commitData: any,
   ownerSlashRepo: string
@@ -80,6 +88,9 @@ const parseCommitInfo = (
   return returnObj;
 };
 
+/**
+ * Calls GitHub for details of a specific commit.
+ */
 const getCommitSummary = async (
   commitId: string,
   ownerSlashRepo: string
@@ -101,10 +112,6 @@ const getCommitSummary = async (
   }
 };
 
-export type CommitOpts = {
-  mock: boolean;
-};
-
 /**
  * Calls GitHub to get recent commits.
  */
@@ -113,17 +120,22 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
     console.warn("Using mock data");
     return sampleCommits;
   }
+  console.warn("Attempting real GitHub API calls...");
 
   // const arrayOfRepos = await getAllRepos(usernames)
   const arrayOfRepos = [
-    "fractal-bootcamp/unigroovers.grooviverse",
     "fractal-bootcamp/hackathon-kitchen-gossip",
+    "fractal-bootcamp/lui.personal-site",
   ];
 
   const commitSummaries: CommitSummary[] = [];
 
   for (const ownerSlashRepo of arrayOfRepos) {
+    console.log("Calling for commits on", ownerSlashRepo);
+
     await sleep(SLEEP_TIMES.githubApiSleep);
+    // REVIEW THIS....MAY NOT BE HELPFUL ANY MORE...
+
     const commitIds = await getRecentCommitList(ownerSlashRepo);
     if (!commitIds?.length) {
       console.error("No commits found for repo", ownerSlashRepo);
@@ -142,6 +154,8 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
     }
   }
 
-  console.log("commitSummaries", commitSummaries);
+  console.log(
+    `Returning a list of ${commitSummaries.length} commitSummary objects.`
+  );
   return commitSummaries;
 };

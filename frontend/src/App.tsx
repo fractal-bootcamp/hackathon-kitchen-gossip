@@ -6,6 +6,7 @@ export const PORT = 4101; // change this to an import before doing anything seri
 const serverPath = `http://localhost:${PORT}`;
 
 const checkHeartbeat = async () => {
+  console.log("Calling GET endpoint.")
   const response = await fetch(`${serverPath}/express/heartbeat`, {
     method: "GET",
     headers: {
@@ -13,8 +14,8 @@ const checkHeartbeat = async () => {
     },
   });
   const json = await response.json();
-  console.log("The server response was:", json.message);
-  return json.message; // unusued here
+  console.log("Server response was:", json.message);
+  return json.message; // unused for now
 };
 
 
@@ -22,6 +23,7 @@ const getRecentCommitsFromServer = async (
   message: string, // unused for now
   setValuesFromServer: Function
 ) => {
+  console.log("Calling POST endpoint with message:", message)
   const response = await fetch(`${serverPath}/express/recent-commits`, {
     method: "POST",
     headers: {
@@ -31,7 +33,7 @@ const getRecentCommitsFromServer = async (
   const json = await response.json();
 
   const recentCommits = json.commits
-  console.log("The server response was:", recentCommits)
+  console.log("Server response was:", recentCommits)
   setValuesFromServer(recentCommits)
   return recentCommits;
 };
