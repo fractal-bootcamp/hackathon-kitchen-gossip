@@ -142,7 +142,9 @@ export const getRecentCommits = async (): Promise<CommitSummary[]> => {
     }
   }
 
-  const maxAgeHrs = 4;
+  console.log("example commitsummary", commitSummaries[0]);
+
+  const maxAgeHrs = 100;
   console.log(`Removing all commits older than ${maxAgeHrs} hours.`);
   const maxAgeAgo = new Date(Date.now() - maxAgeHrs * 60 * 60 * 1000);
   const recentCommitSummaries = commitSummaries.filter(

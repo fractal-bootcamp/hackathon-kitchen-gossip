@@ -67,9 +67,9 @@ export const getCommitsViaGraph = async (
           message: commit.message,
           linesAdded: commit.additions,
           linesRemoved: commit.deletions,
-          filesChangedNum: commit.changedFiles,
-          filesChangedNames: commit.fileChanges.edges
-            .map((fileEdge) => fileEdge.node.path)
+          filesChangedNum: commit.changedFilesIfAvailable,
+          filesChangedNames: commit.tree.entries
+            .map((fileEdge) => fileEdge.path)
             .join(", "),
         };
       });
