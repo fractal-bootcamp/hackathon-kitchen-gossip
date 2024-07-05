@@ -1,6 +1,7 @@
 import { CommitSummary } from "../../types/CommitSummary";
 import { getEnv } from "../../utils/getEnv";
 import { getFirstNonNull } from "../../utils/getFirstNonNull";
+import { getName } from "./getName";
 
 /**
  * Query builder is here: https://docs.github.com/en/graphql/overview/explorer
@@ -105,8 +106,10 @@ export const getCommitsViaGraph = async (
           ? authorOrCommitter.user.login
           : authorOrCommitter.name;
 
+        const slackName = getName(preferredName);
+
         commits.push({
-          user: preferredName,
+          user: slackName,
           repo: `${owner}/${repo}`,
           time: new Date(commit.author.date),
           message: commit.message,
