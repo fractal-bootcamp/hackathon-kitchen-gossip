@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 
 export const PORT = 4101; // change this to an import before doing anything serious
@@ -25,7 +25,7 @@ const checkHeartbeat = async () => {
  * @param repo The repository name with no slashes.
  * @param callBack A function that will be executed on the output if passed.
  */
-const getRecentCommitsFromServer = async (
+const getCommitsFromExpress = async (
   owner?: string,
   repo?: string,
   callBack?: Function
@@ -58,30 +58,53 @@ const getRecentCommitsFromServer = async (
   }
   return recentCommits;
 };
-// ADD THIS BACK ONCE GITHUB TEST IS WORKING
-// 
-// const testFullFlow = async (
-//   message: string,
-//   setValuesFromServer: Function
-// ) => {
-//   const response = await fetch(`${serverPath}/express/full-flow`, {
-//     method: "POST",
-//     body: JSON.stringify({ message }),
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-//   const json = await response.json();
-//   const updatedMessages = json.messages;
-//   console.log("The server response was:", updatedMessages);
-//   setValuesFromServer(updatedMessages);
-//   return json.messages; // unused here
-// };
+
+
+
+/**
+ * Calls the Express endpoint to get recent commits from GitHub.
+ * A typical repo address looks like: github.com/owner-name/repo-name
+ * @param owner The owner of the repository. Usually a team / org / user name.
+ * @param repo The repository name with no slashes.
+ * @param callBack A function that will be executed on the output if passed.
+ */
+const getReviewsFromExpress = async (
+  owner?: string,
+  repo?: string,
+  callBack?: Function
+) => {
+  console.log(`Calling POST endpoint with owner-name/repo-name: ${owner}/${repo}`);
+  const body: any = {};
+  if (owner) body.owner = owner;
+  if (repo) body.repo = repo;
+
+  const response = await fetch(`${serverPath}/express/full-flow`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+  const json = await response.json();
+
+  const reviews = json.reviews;
+  const users = json.users;
+  console.log("Server response was reviews:", reviews); // Currently a STRING
+  console.log("Server response was users:", users); // Currently an ARRAY
+
+  if (callBack) {
+    callBack([reviews]);
+  }
+  return reviews;
+};
+
+
+
+
 
 function App() {
   const [ownerInput, setOwnerInput] = useState("");
   const [repoInput, setRepoInput] = useState("");
-
   const [valuesFromServer, setValuesFromServer] = useState(["no response yet"]);
 
   // const tailwindButtonClass = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded";
@@ -141,11 +164,27 @@ function App() {
       <button
         style={simpleButtonStyles}
         onClick={() =>
-          getRecentCommitsFromServer(ownerInput, repoInput, setValuesFromServer)
+          getCommitsFromExpress(ownerInput, repoInput, setValuesFromServer)
         }
       >
         POST call
       </button>
+      <br />
+      <br />
+
+      <div>OR trigger a full Server -&gt; GitHub -&gt; OpenAI flow:</div>
+      <button
+        style={simpleButtonStyles}
+        onClick={() =>
+          getReviewsFromExpress(ownerInput, repoInput, setValuesFromServer)
+        }
+      >
+        E2E test
+      </button>
+
+      <br />
+      <br />
+      <br />
       <div>Responses will appear here:</div>
 
       {valuesFromServer.map((value, index) => {

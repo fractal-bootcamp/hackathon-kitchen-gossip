@@ -31,8 +31,9 @@ app.post("/express/recent-commits", async (req, res) => {
 
 app.post("/express/full-flow", async (req, res) => {
   console.log("POST request to /express/full-flow");
+  const { owner, repo }: { owner?: string; repo?: string } = req.body;
   try {
-    const reviewStatus: ReviewStatus = await getReviewStatus();
+    const reviewStatus: ReviewStatus = await getReviewStatus(owner, repo);
     const result = {
       reviews: reviewStatus.reviews,
       users: reviewStatus.users,
