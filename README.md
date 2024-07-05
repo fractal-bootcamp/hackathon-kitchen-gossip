@@ -12,6 +12,11 @@
 1. Give the FE a more clear way of indicating that a request is being processed
 1. Add another input box to the FE App that lets you specific a number. Pass that number all the way through as the maxAgeHrs value.
 
+# Distant Future Maybe Tasks
+
+1. Migrate from OAuth to a Github App. More details [here](https://docs.github.com/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps).
+   Until this happens, the tool will only see: public repos, and private repos of orgs that have not blocked OAuth access to their private repos [read more on this](https://docs.github.com/en/organizations/managing-oauth-access-to-your-organizations-data).
+
 # How this code is organized:
 
 ## /server
