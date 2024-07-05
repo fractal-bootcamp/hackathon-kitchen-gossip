@@ -185,11 +185,13 @@ function App() {
       <br />
       <br />
       <br />
-      <div>Responses will appear here:</div>
+      <div style={{ fontWeight: "bold", marginBottom: "10px" }}>Output:</div>
 
-      {valuesFromServer.map((value, index) => {
-        return <div key={index}>{value}</div>;
-      })}
+      <div style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "5px" }}>
+        {valuesFromServer.map((value, index) => {
+          return <div key={index} style={{ marginBottom: "5px" }}>{value}</div>;
+        })}
+      </div>
     </>
   );
 }
