@@ -167,7 +167,7 @@ function App() {
           getCommitsFromExpress(ownerInput, repoInput, setValuesFromServer)
         }
       >
-        POST call
+        GitHub Test
       </button>
       <br />
       <br />

@@ -6,6 +6,7 @@
 1. Move the serverPath that currently lives in frontend/src/App.tsx into an env file
 1. Get Tailwind working on the App.tsx page and make it pretty
 1. Give the FE a more clear way of indicating that a request is being processed
+1. Add another input box to the FE App that lets you specific a number. Pass that number all the way through as the maxAgeHrs value.
 
 # How this code is organized:
 

@@ -105,7 +105,7 @@ export async function getReviewStatus(
   repo?: string
 ): Promise<ReviewStatus> {
   // Step 1 - get recent commits from GitHub
-  const commits = await getRecentCommits(owner, repo, 24);
+  const commits = await getRecentCommits(owner, repo, 12);
 
   // Step 2 - organize that data into an array of CommitsByUser objects that
   //  look like: { user: "johndoe", commits = [ {CommitSummary1}, {CommitSummary2}, ... ] }
