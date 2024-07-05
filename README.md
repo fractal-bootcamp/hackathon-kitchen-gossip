@@ -1,5 +1,9 @@
 # TO DO LIST
 
+1. Get boltServer.ts working on a remote host
+1. Update boltServer to be calling the same functions as the expressServer
+1. Tidy up /server/slack files - currently lots of obsolete commentcode
+1. Test with Slack in Prod so that it calls the actual boltServer
 1. Update the CommitSummary type across the repo
    add in a branch:string value
    Nest an object of all the github standardized info where we can use github terminology where it's defined, see this comment for details: https://github.com/fractal-bootcamp/hackathon-kitchen-gossip/pull/11#discussion_r1666100257
