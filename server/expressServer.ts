@@ -29,8 +29,8 @@ app.post("/express/recent-commits", async (req, res) => {
     // }));
     res.json({ commits: recentCommits });
   } catch (error) {
-    console.error("Error requesting reviews:", error);
-    res.status(500).json({ error: "Failed to fetch reviews." });
+    console.error("Error requesting commits:", error);
+    res.status(500).json({ error: "Failed to fetch commits." });
   }
 });
 
