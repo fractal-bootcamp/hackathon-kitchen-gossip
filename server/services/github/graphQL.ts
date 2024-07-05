@@ -76,6 +76,8 @@ export const getCommitsViaGraph = async (
 
     const data = await response.json();
 
+    console.log("FULL response is", data);
+
     const commits: CommitSummary[] = [];
 
     data.data.repository.refs.edges.forEach((refEdge) => {
