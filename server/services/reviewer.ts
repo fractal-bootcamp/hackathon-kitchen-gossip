@@ -50,14 +50,6 @@ export function transformStatus(status: GithubStatus): string {
 }
 
 /**
- * Obsolete function - I don't believe this is ever called.
- */
-function reviewUserCommits(CommitsByUser: CommitsByUser): string {
-  const commitCount = CommitsByUser.commits.length;
-  return `User: ${CommitsByUser.user} has ${commitCount} commits.`;
-}
-
-/**
  * Takes in array of CommitsByUser objects and passes them all
  * to the evaluateCommits function (which calls LLM), and then returns
  * a single string of LLM-generated reviews.
@@ -113,7 +105,7 @@ export async function getReviewStatus(
   repo?: string
 ): Promise<ReviewStatus> {
   // Step 1 - get recent commits from GitHub
-  const commits = await getRecentCommits(owner, repo);
+  const commits = await getRecentCommits(owner, repo, 24);
 
   // Step 2 - organize that data into an array of CommitsByUser objects that
   //  look like: { user: "johndoe", commits = [ {CommitSummary1}, {CommitSummary2}, ... ] }

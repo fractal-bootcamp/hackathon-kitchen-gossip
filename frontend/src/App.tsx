@@ -189,7 +189,7 @@ function App() {
 
       <div style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "5px" }}>
         {valuesFromServer.map((value, index) => {
-          return <div key={index} style={{ marginBottom: "5px" }}>{value}</div>;
+          return <div key={index} style={{ marginBottom: "5px", whiteSpace: "pre-wrap" }}>{value}</div>;
         })}
       </div>
     </>

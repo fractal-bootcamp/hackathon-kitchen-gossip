@@ -15,11 +15,16 @@ dotenv.config();
  */
 export const getRecentCommits = async (
   owner?: string,
-  repo?: string
+  repo?: string,
+  maxAgeHrs?: number
 ): Promise<CommitSummary[]> => {
   if (AppConfig.mock) {
     console.warn("Using mock data");
     return sampleCommits;
+  }
+
+  if (maxAgeHrs == null) {
+    maxAgeHrs = 12;
   }
 
   if (!owner) {
@@ -36,7 +41,7 @@ export const getRecentCommits = async (
     arrayOfRepos.push(singleRepo);
   } else {
     console.log("No specific repo requested, querying all repos for", owner);
-    const manyRepos = await getAllRepos([owner]);
+    const manyRepos = await getAllRepos([owner], maxAgeHrs);
     console.log(manyRepos.length, "relevant repos identified.");
     arrayOfRepos.push(...manyRepos);
   }
@@ -58,7 +63,6 @@ export const getRecentCommits = async (
 
   console.log("example commitsummary", commitSummaries[0]);
 
-  const maxAgeHrs = 12;
   console.log(`Removing all commits older than ${maxAgeHrs} hours.`);
   const maxAgeAgo = new Date(Date.now() - maxAgeHrs * 60 * 60 * 1000);
   const recentCommitSummaries = commitSummaries.filter(
