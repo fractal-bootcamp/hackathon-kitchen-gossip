@@ -1,13 +1,12 @@
-# TO DO LISTS
+# BACKLOG
 
-# Server and and Slack integration
+## Server and and Slack integration (needed for bootcamp use)
 
 1. Get boltServer.ts working on a remote host
 1. Update boltServer to be calling the same functions as the expressServer
-1. Tidy up /server/slack files - currently lots of obsolete commentcode
-1. Test with Slack in Prod so that it calls the actual boltServer
+1. Change Slack settings in Prod so that it calls the actual boltServer, not localhost
 
-# Better more usable gossip output
+## Better more usable gossip output
 
 1. Add in aggregated counts under each review, e.g.
    @Alex has done great blah blah blah emoji emoji
@@ -20,20 +19,24 @@
    add in a branch:string value
    Nest an object of all the github standardized info where we can use github terminology where it's defined, see this comment for details: https://github.com/fractal-bootcamp/hackathon-kitchen-gossip/pull/11#discussion_r1666100257
 
-# Improvements to FE App debug tool
+## Improvements to FE App debug tool
 
 1. Move the serverPath that currently lives in frontend/src/App.tsx into an env file
 1. Get Tailwind working on the App.tsx page and make it pretty
 1. Give the FE a more clear way of indicating that a request is being processed
 1. Add another input box to the FE App that lets you specific a number. Pass that number all the way through as the maxAgeHrs value.
 
-# Getting access to private repos
+## Getting access to private repos
 
 1. Work out how to get approved private repos showing in responses from GraphQL.
    Current query is efficient but omits private repos (even when a project owner
    is allowing OAuth scraping)
 1. Longer term but much bigger execise: Migrate from OAuth to a Github App. More details [here](https://docs.github.com/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps).
    Until this happens, the tool will only see: public repos, and private repos of orgs that have not blocked OAuth access to their private repos [read more on this](https://docs.github.com/en/organizations/managing-oauth-access-to-your-organizations-data).
+
+## Other
+
+1. Tidy up /server/slack files - currently lots of obsolete commentcode
 
 # How this code is organized:
 
