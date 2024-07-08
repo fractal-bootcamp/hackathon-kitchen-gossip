@@ -63,6 +63,7 @@ function reviewUserCommits(CommitsByUser: CommitsByUser): string {
  * a single string of LLM-generated reviews.
  */
 async function reviewCommits(commits: CommitsByUser[]): Promise<string> {
+  console.log("reviewCommits started with", commits.length, "commits");
   const reviews: string[] = [];
 
   for (const cl of commits) {
@@ -107,9 +108,12 @@ function getCommitsByUser(commits: CommitSummary[]): CommitsByUser[] {
  * Github and OpenAI, and parses the information into a format that
  * Slack can handle.
  */
-export async function getReviewStatus(): Promise<ReviewStatus> {
+export async function getReviewStatus(
+  owner?: string,
+  repo?: string
+): Promise<ReviewStatus> {
   // Step 1 - get recent commits from GitHub
-  const commits = await getRecentCommits();
+  const commits = await getRecentCommits(owner, repo);
 
   // Step 2 - organize that data into an array of CommitsByUser objects that
   //  look like: { user: "johndoe", commits = [ {CommitSummary1}, {CommitSummary2}, ... ] }

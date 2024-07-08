@@ -19,25 +19,21 @@ app.get("/express/heartbeat", async (req, res) => {
 
 app.post("/express/recent-commits", async (req, res) => {
   console.log("POST request to /express/recent-commits");
+  const { owner, repo }: { owner?: string; repo?: string } = req.body;
   try {
-    const recentCommits: CommitSummary[] = await getRecentCommits();
-    // const result = recentCommits.map((commit) => ({
-    //   repo: commit.repo,
-    //   user: commit.user,
-    //   message: commit.message,
-    //   date: commit.time,
-    // }));
+    const recentCommits: CommitSummary[] = await getRecentCommits(owner, repo);
     res.json({ commits: recentCommits });
   } catch (error) {
-    console.error("Error requesting commits:", error);
-    res.status(500).json({ error: "Failed to fetch commits." });
+    console.error("Error requesting reviews:", error);
+    res.status(500).json({ error: "Failed to fetch reviews." });
   }
 });
 
 app.post("/express/full-flow", async (req, res) => {
   console.log("POST request to /express/full-flow");
+  const { owner, repo }: { owner?: string; repo?: string } = req.body;
   try {
-    const reviewStatus: ReviewStatus = await getReviewStatus();
+    const reviewStatus: ReviewStatus = await getReviewStatus(owner, repo);
     const result = {
       reviews: reviewStatus.reviews,
       users: reviewStatus.users,

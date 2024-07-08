@@ -4,6 +4,8 @@
    add in a branch:string value
    Nest an object of all the github standardized info where we can use github terminology where it's defined, see this comment for details: https://github.com/fractal-bootcamp/hackathon-kitchen-gossip/pull/11#discussion_r1666100257
 1. Move the serverPath that currently lives in frontend/src/App.tsx into an env file
+1. Get Tailwind working on the App.tsx page and make it pretty
+1. Give the FE a more clear way of indicating that a request is being processed
 
 # How this code is organized:
 

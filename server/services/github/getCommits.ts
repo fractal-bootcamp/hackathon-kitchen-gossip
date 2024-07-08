@@ -113,19 +113,29 @@ const detailedCommitInfo = async (
 /**
  * Calls GitHub to get recent commits.
  */
-export const getRecentCommits = async (): Promise<CommitSummary[]> => {
+export const getRecentCommits = async (
+  owner?: string,
+  repo?: string
+): Promise<CommitSummary[]> => {
   if (AppConfig.mock) {
     console.warn("Using mock data");
     return sampleCommits;
   }
+
+  if (!owner) {
+    owner = "fractal-bootcamp";
+  }
+  if (!repo) {
+    repo = "hackathon-kitchen-gossip";
+  }
   console.warn("Attempting real GitHub API calls...");
 
+  const testRepo = `${owner}/${repo}`;
+
+  // Later: this can home a separate call to get a list of relevant repos
+  // for a given owner or user, hence the use of an Array here.
   // const arrayOfRepos = await getAllRepos(usernames)
-  const arrayOfRepos = [
-    // "fractal-bootcamp/hackathon-kitchen-gossip",
-    "fractal-bootcamp/hackathon-kitchen-gossip",
-    // "fractal-bootcamp/hackathon-kitchen-gossip",
-  ];
+  const arrayOfRepos = [testRepo];
 
   const commitSummaries: CommitSummary[] = [];
   for (const ownerSlashRepo of arrayOfRepos) {
