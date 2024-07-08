@@ -7,11 +7,14 @@ import { SLEEP_TIMES, sleep } from "../../utils/sleep";
  * @usernames array of usernames to get repos for
  * @returns array of repo names
  */
-export const getAllRepos = async (usernames: string[]): Promise<string[]> => {
+export const getAllRepos = async (
+  usernames: string[],
+  maxAgeHrs: number
+): Promise<string[]> => {
   let allRepos: string[] = [];
   for (const username of usernames) {
     await sleep(SLEEP_TIMES.githubApiSleep);
-    const thisUsersRepos = await getOneUserRepos(username);
+    const thisUsersRepos = await getOneUserRepos(username, maxAgeHrs);
     allRepos = [...allRepos, ...thisUsersRepos];
   }
   console.log("outputArray:", allRepos);
@@ -23,7 +26,10 @@ export const getAllRepos = async (usernames: string[]): Promise<string[]> => {
  * Fetches most recent list in a single call. Returns
  * all repos with changes from last 12 hours.
  */
-const getOneUserRepos = async (username: string): Promise<string[]> => {
+const getOneUserRepos = async (
+  username: string,
+  maxAgeHrs: number
+): Promise<string[]> => {
   const gitHubToken = getEnv("GITHUB_AUTH_KEY");
   const url = `https://api.github.com/users/${username}/repos?sort=updated`;
   const headerObject = {
@@ -32,8 +38,12 @@ const getOneUserRepos = async (username: string): Promise<string[]> => {
     },
   };
 
-  const twelveHoursAgo = new Date(
-    Date.now() - 12 * 60 * 60 * 1000
+  if (maxAgeHrs > 24 || maxAgeHrs < 1) {
+    throw new Error("maxAgeHrs must be between 1 and 24");
+  }
+
+  const maxAgeAgo = new Date(
+    Date.now() - maxAgeHrs * 60 * 60 * 1000
   ).toISOString();
 
   try {
@@ -45,9 +55,7 @@ const getOneUserRepos = async (username: string): Promise<string[]> => {
     }
     const repos = await response.json();
     return repos
-      .filter(
-        (repo) => new Date(repo.updated_at).toISOString() > twelveHoursAgo
-      )
+      .filter((repo) => new Date(repo.updated_at).toISOString() > maxAgeAgo)
       .map((repo) => repo.full_name);
   } catch (error) {
     console.log("ERRROR: problems here", error);

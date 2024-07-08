@@ -139,6 +139,13 @@ function App() {
       <br />
       <br />
       <div>A typical repo address looks like: github.com/owner-name/repo-name</div>
+      <div style={{ fontSize: "0.8rem", color: "grey" }}>
+        Leave repo-name blank to get commits from all repos under a specific owner.
+        <br />
+        The app will only look at repos that have seen work in the last 12 hours.
+      </div>
+
+
 
       <input
         type="text"
@@ -167,7 +174,7 @@ function App() {
           getCommitsFromExpress(ownerInput, repoInput, setValuesFromServer)
         }
       >
-        POST call
+        GitHub Test
       </button>
       <br />
       <br />
@@ -189,7 +196,7 @@ function App() {
 
       <div style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "5px" }}>
         {valuesFromServer.map((value, index) => {
-          return <div key={index} style={{ marginBottom: "5px" }}>{value}</div>;
+          return <div key={index} style={{ marginBottom: "5px", whiteSpace: "pre-wrap" }}>{value}</div>;
         })}
       </div>
     </>

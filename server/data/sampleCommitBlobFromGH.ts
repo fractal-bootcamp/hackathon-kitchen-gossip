@@ -4,6 +4,15 @@
 // "sha",
 //  "node_id",
 //  "commit",
+//        commit.author
+//                commit.author.name
+//        commit.committer
+//                commit.committer.name
+//        commit.message
+//        commit.tree
+//        commit.url
+//        commit.comment_count
+//        commit.verification
 //  "url",
 //  "html_url",
 //  "comments_url",
