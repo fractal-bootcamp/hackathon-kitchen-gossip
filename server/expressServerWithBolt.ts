@@ -74,7 +74,7 @@ boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
     // Send a message to the channel
     await say({
       channel: command.channel_id, // Use the channel ID from the command
-      text: "<@${command.user_id}> you wanna know what's cooking? Let me go check.",
+      text: `<@${command.user_id}> you wanna know what's cooking? Let me go check.`,
     });
 
     // Get summary of user reviews
