@@ -6,13 +6,28 @@ import { getRecentCommits } from "./services/github/getCommits";
 import { CommitSummary } from "./types/CommitSummary";
 const { App, ExpressReceiver } = require("@slack/bolt");
 
-const PORT = process.env.SERVER_PORT || 10000;
+const PORT = process.env.SERVER_PORT || 3000;
+// On Render:
 // The default value of PORT is 10000 for all Render web services.
 // You can override this value by setting the environment variable
 // in the Render Dashboard.
 
 const expressReceiver = new ExpressReceiver({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
+});
+
+const exApp = express();
+exApp.use(express.json());
+exApp.use(cors());
+
+// LOGGING MIDDLEWARE
+exApp.use((req, res, next) => {
+  console.log("Request Body:", req.body);
+  console.log("Request URL:", req.url);
+  console.log("Request Method:", req.method);
+  console.log("Entire Request:", req);
+
+  next();
 });
 
 // Initialize your Bolt app
@@ -25,18 +40,6 @@ const boltApp = new App({
     commands: "slack/commands",
   },
   receiver: expressReceiver,
-});
-
-const exApp = express();
-exApp.use(express.json());
-exApp.use(cors());
-
-// LOGGING MIDDLEWARE
-exApp.use((req, res, next) => {
-  console.log("Request Body:", req.body);
-  console.log("Request URL:", req.url);
-  console.log("Request Method:", req.method);
-  next();
 });
 
 // Use Bolt's express middleware to handle Slack events
