@@ -17,13 +17,13 @@ const exApp = express();
 exApp.use(express.json());
 exApp.use(cors());
 
-// LOGGING MIDDLEWARE
-exApp.use((req, res, next) => {
-  console.log("Request Body Length:", req.body.length);
-  console.log("Request URL:", req.url);
-  console.log("Request Method:", req.method);
-  next();
-});
+// // LOGGING MIDDLEWARE
+// exApp.use((req, res, next) => {
+//   console.log("Request Body Length:", req.body.length);
+//   console.log("Request URL:", req.url);
+//   console.log("Request Method:", req.method);
+//   next();
+// });
 
 // Initialize an ExpressReceiver
 const expressReceiver = new ExpressReceiver({
