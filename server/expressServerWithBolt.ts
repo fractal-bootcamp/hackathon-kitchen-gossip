@@ -27,14 +27,15 @@ const boltApp = new App({
   receiver: expressReceiver,
 });
 
-console.log(boltApp);
-
 const exApp = express();
 exApp.use(express.json());
 exApp.use(cors());
 
+exApp.use();
+
 // Use Bolt's express middleware to handle Slack events
 exApp.use("/slack/events", async (req, res, next) => {
+  console.log("/slack/events request received", req.body);
   if (req.body.type === "url_verification") {
     res.status(200).send(req.body.challenge);
   } else {
