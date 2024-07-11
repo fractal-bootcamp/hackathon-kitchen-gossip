@@ -94,7 +94,7 @@ boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
     const startBlocks = getStartBlocks(99, 99);
 
     await say({
-      channel: "#kitchen-gossip",
+      channel: command.channel_id,
       text: "First message:",
       blocks: startBlocks,
     });
@@ -102,30 +102,16 @@ boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
     for (const review of reviewStatus.reviews) {
       const reviewBlock = getReviewBlock(review);
       await say({
-        channel: "#kitchen-gossip",
+        channel: command.channel_id,
         text: "Here's what's cooking:",
         blocks: reviewBlock,
       });
     }
 
-    // const reviewBlocks = await makeReviewBlocks(reviewStatus.reviews);
-
-    // await say(`## Reviews Status\n${reviewStatus.reviews}`);
-    // await say({
-    //   channel: "#kitchen-gossip",
-    //   text: reviewStatus.reviews,
-    // });
-
-    // await say({
-    //   channel: "#kitchen-gossip",
-    //   text: "Here's what's cooking:",
-    //   blocks: reviewBlocks,
-    // });
-
     const endBlocks = getEndBlocks();
 
     await say({
-      channel: "#kitchen-gossip",
+      channel: command.channel_id,
       text: "Last message:",
       blocks: endBlocks,
     });
