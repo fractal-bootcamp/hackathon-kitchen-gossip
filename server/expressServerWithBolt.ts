@@ -82,10 +82,9 @@ boltApp.event("message", async ({ event, say }) => {
 
 // Add a command listener for /whatscooking
 boltApp.command("/whatscooking", async ({ command, ack, respond }) => {
-  console.log("/whatscooking", command);
-
   try {
     await ack();
+    console.log("/whatscooking", command);
     console.log("ack() has happened");
     await respond(`Here's what's cooking!`);
 
