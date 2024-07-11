@@ -2,12 +2,13 @@
 
 ## Server and and Slack integration (needed for bootcamp use)
 
-1. Get boltServer.ts working on a remote host
-1. Update boltServer to be calling the same functions as the expressServer
-1. Change Slack settings in Prod so that it calls the actual boltServer, not localhost
+1. DONE - Get boltServer.ts working on a remote host
+1. DONE - Update boltServer to be calling the same functions as the expressServer
+1. DONE - Change Slack settings in Prod so that it calls the actual boltServer, not localhost
 
 ## Better more usable gossip output
 
+1. DONE - Split out bot responses so they can get individual reactions
 1. Add in aggregated counts under each review, e.g.
    @Alex has done great blah blah blah emoji emoji
    (5 commits)
@@ -37,6 +38,7 @@
 ## Other
 
 1. Tidy up /server/slack files - currently lots of obsolete commentcode
+1. Work out why Render sometimes complains about the PORT allocation and takes a while to deploy
 
 # How this code is organized:
 

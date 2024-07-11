@@ -3,15 +3,15 @@ export const getName = (username: string): string => {
     case "briansmiley":
       return "@Brian";
     case "brunoLloret":
-      return "@Bruno";
+      return "<@U07675V6CUB>";
     case "elizasvielelizasviel":
-      return "<@Norman Qian>";
+      return "<@U0769P5AD5J>"; // Norman
     case "dxrendxren":
-      return "<@Dorothy>";
+      return "<@U075SN5BV47>";
     case "sarahbicknell":
       return "@Sarah";
     case "yablochko8":
-      return "<@Lui>";
+      return "<@U076W321UJC>";
     case "yayakixtenet":
     case "yayakix":
       return "@Iyana";
