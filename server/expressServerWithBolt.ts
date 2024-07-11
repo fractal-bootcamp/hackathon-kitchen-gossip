@@ -71,11 +71,11 @@ boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
     console.log("/whatscooking command received, ack() has happened");
     await respond(`Request received!`);
 
-    // Send a message to the channel
-    await say({
-      channel: command.channel_id, // Use the channel ID from the command
-      text: `<@${command.user_id}> you wanna know what's cooking? Let me go check.`,
-    });
+    // // Send a message to the channel
+    // await say({
+    //   channel: command.channel_id, // Use the channel ID from the command
+    //   text: `<@${command.user_id}> you wanna know what's cooking? Let me go check.`,
+    // });
 
     // Get summary of user reviews
     // This is the master call that triggers all the other sub calls
