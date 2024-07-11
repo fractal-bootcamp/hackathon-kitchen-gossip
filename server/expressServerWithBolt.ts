@@ -31,7 +31,7 @@ const exApp = express();
 exApp.use(express.json());
 exApp.use(cors());
 
-exApp.use();
+// exApp.use();
 
 // Use Bolt's express middleware to handle Slack events
 exApp.use("/slack/events", async (req, res, next) => {
