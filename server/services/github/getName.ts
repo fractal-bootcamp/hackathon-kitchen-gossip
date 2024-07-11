@@ -1,6 +1,6 @@
 export const getName = (username: string): string => {
   switch (username) {
-    case "ajroberts0417ajroberts0417":
+    case "ajroberts0417":
       return "<@U0764BM894M>";
     case "briansmiley":
       return "<@U075SN59RMM>";
