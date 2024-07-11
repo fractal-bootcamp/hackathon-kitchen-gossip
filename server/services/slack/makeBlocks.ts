@@ -48,7 +48,7 @@ export const getReviewBlock = (review: string) => [
  * @param reviews
  * @returns
  */
-export async function makeReviewBlocks(reviews: string): Promise<any[]> {
+async function makeReviewBlocks(reviews: string[]): Promise<any[]> {
   return [
     {
       type: "header",

@@ -8,7 +8,6 @@ import {
   getEndBlocks,
   getReviewBlock,
   getStartBlocks,
-  makeReviewBlocks,
 } from "./services/slack/makeBlocks";
 const { App, ExpressReceiver } = require("@slack/bolt");
 
