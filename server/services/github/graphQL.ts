@@ -1,5 +1,5 @@
 import { CommitSummary } from "../../types/CommitSummary";
-import { getEnv } from "../../utils/getEnv";
+// import { getEnv } from "../../utils/getEnv";
 import { getFirstNonNull } from "../../utils/getFirstNonNull";
 import { getName } from "./getName";
 
@@ -62,8 +62,12 @@ export const getCommitsViaGraph = async (
 ): Promise<CommitSummary[]> => {
   console.log("getCommitsViaGraph called", ownerSlashRepo);
   const [owner, repo] = ownerSlashRepo.split("/");
-  const token = getEnv("GITHUB_AUTH_KEY");
+  const token = process.env.GITHUB_AUTH_KEY;
+  console.log(
+    "getCommitsViaGraph DEBUG: owner/token/repo all distinguished fine"
+  );
   const query = buildGraphQuery(owner, repo);
+  console.log("getCommitsViaGraph DEBUG: query built");
   try {
     const response = await fetch("https://api.github.com/graphql", {
       method: "POST",

@@ -54,7 +54,7 @@ export function transformStatus(status: GithubStatus): string {
  * to the evaluateCommits function (which calls LLM), and then returns
  * a single string of LLM-generated reviews.
  */
-async function reviewCommits(commits: CommitsByUser[]): Promise<string> {
+async function reviewCommits(commits: CommitsByUser[]): Promise<string[]> {
   console.log("reviewCommits started with", commits.length, "commits");
   const reviews: string[] = [];
 
@@ -63,9 +63,9 @@ async function reviewCommits(commits: CommitsByUser[]): Promise<string> {
     reviews.push(userReview);
   }
 
-  console.log("result:", reviews);
-  const results = reviews.join("\n\n");
-  return results;
+  // console.log("result:", reviews);
+  // const results = reviews.join("\n\n");
+  return reviews;
 }
 
 /**
@@ -104,17 +104,27 @@ export async function getReviewStatus(
   owner?: string,
   repo?: string
 ): Promise<ReviewStatus> {
+  console.log(
+    "getReviewStatus called with. Optional params are owner:",
+    owner,
+    "and repo:",
+    repo
+  );
+
   // Step 1 - get recent commits from GitHub
   const commits = await getRecentCommits(owner, repo, 12);
+  console.log(`inside getReviewStatus: getRecentCommits has completed`);
 
   // Step 2 - organize that data into an array of CommitsByUser objects that
   //  look like: { user: "johndoe", commits = [ {CommitSummary1}, {CommitSummary2}, ... ] }
   const users = getUniqueUsers(commits);
   const commitsByUser = getCommitsByUser(commits);
+  console.log(`inside getReviewStatus: getCommitsByUser has completed`);
 
   // Step 3 - Send commit data to OpenAI user by user and received back
   // LLM-generated reviews
-  const reviews: string = await reviewCommits(commitsByUser);
+  const reviews: string[] = await reviewCommits(commitsByUser);
+  console.log(`inside getReviewStatus: reviewCommits has completed`);
 
   // Step 4 - Combine the reviews back with the usernames and return to Slack
   // QUESTION FOR DC - why is reviews a string here while users is an array?

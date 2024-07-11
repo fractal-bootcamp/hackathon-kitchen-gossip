@@ -4,6 +4,11 @@ import { getReviewStatus } from "./services/reviewer";
 import { ReviewStatus } from "./types/shared";
 import { getRecentCommits } from "./services/github/getCommits";
 import { CommitSummary } from "./types/CommitSummary";
+import {
+  getEndBlocks,
+  getReviewBlock,
+  getStartBlocks,
+} from "./services/slack/makeBlocks";
 const { App, ExpressReceiver } = require("@slack/bolt");
 
 const PORT = process.env.SERVER_PORT || 3000;
@@ -12,25 +17,26 @@ const PORT = process.env.SERVER_PORT || 3000;
 // You can override this value by setting the environment variable
 // in the Render Dashboard.
 
-const exApp = express();
-exApp.use(express.json());
-exApp.use(cors());
-
-// LOGGING MIDDLEWARE
-exApp.use((req, res, next) => {
-  console.log("Request Body:", req.body);
-  console.log("Request URL:", req.url);
-  console.log("Request Method:", req.method);
-  next();
-});
+// // LOGGING MIDDLEWARE
+// exApp.use((req, res, next) => {
+//   console.log("Request Body Length:", req.body.length);
+//   console.log("Request URL:", req.url);
+//   console.log("Request Method:", req.method);
+//   next();
+// });
 
 // Initialize an ExpressReceiver
 const expressReceiver = new ExpressReceiver({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
 });
 
+const exApp = expressReceiver.app;
+exApp.use(express.json());
+exApp.use(cors());
+
 const boltApp = new App({
   token: process.env.SLACK_BOT_TOKEN,
+  socketMode: false,
   // signingSecret: process.env.SLACK_SIGNING_SECRET,
   // Use the expressReceiver to handle incoming HTTP requests
   endpoints: {
@@ -42,7 +48,7 @@ const boltApp = new App({
 
 // Use Bolt's express middleware to handle Slack events
 exApp.post("/slack/events", async (req, res, next) => {
-  console.log("/slack/events request received", req.body);
+  console.log("/slack/events request received");
   if (req.body.type === "url_verification") {
     res.status(200).send(req.body.challenge);
   } else {
@@ -57,43 +63,72 @@ exApp.get("/express/heartbeat", async (req, res) => {
   res.json({ message: resMessage });
 });
 
-// Example of a Bolt event listener
-boltApp.event("message", async ({ event, say }) => {
-  await say(`You said: ${event.text}`);
-});
+// // Example of a Bolt event listener
+// boltApp.event("message", async ({ event, say }) => {
+//   await say(`You said: ${event.text}`);
+// });
 
 // Add a command listener for /whatscooking
 boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
   await ack();
 
   try {
-    console.log("/whatscooking", command);
-    console.log("ack() has happened");
-    await respond(`Let me go look in the kitchen and find out!`);
+    console.log("/whatscooking command received, ack() has happened");
+    await respond(`Request received!`);
 
     // Send a message to the channel
     await say({
       channel: command.channel_id, // Use the channel ID from the command
-      text: "Yo Dorothy I think we cracked it!",
+      text: `<@${command.user_id}> you wanna know what's cooking? Let me go check.`,
     });
 
-    // // Get summary of user reviews
-    // // This is the master call that triggers all the other sub calls
-    // const reviewStatus: ReviewStatus = await getReviewStatus();
-    // // await postText(reviewStatus.reviews)
+    // Get summary of user reviews
+    // This is the master call that triggers all the other sub calls
+    console.log("Triggering call to getReviewStatus from router.");
+    const reviewStatus: ReviewStatus = await getReviewStatus(
+      "fractal-bootcamp"
+    );
 
-    // const gossip = await generateKitchenGossip(reviewStatus.reviews);
+    console.log("reviewStatus received.");
 
-    // // await say(`## Reviews Status\n${reviewStatus.reviews}`)
-    // // await say({
-    // //   channel: "#kitchen-gossip",
-    // //   text: reviewStatus.reviews,
-    // // })
+    const startBlocks = getStartBlocks(99, 99);
+
+    await say({
+      channel: "#kitchen-gossip",
+      text: "First message:",
+      blocks: startBlocks,
+    });
+
+    for (const review of reviewStatus.reviews) {
+      const reviewBlock = getReviewBlock(review);
+      await say({
+        channel: "#kitchen-gossip",
+        text: "Here's what's cooking:",
+        blocks: reviewBlock,
+      });
+    }
+
+    // const reviewBlocks = await makeReviewBlocks(reviewStatus.reviews);
+
+    // await say(`## Reviews Status\n${reviewStatus.reviews}`);
     // await say({
     //   channel: "#kitchen-gossip",
-    //   text: "Here is the latest kitchen gossip!",
-    //   blocks: gossip,
+    //   text: reviewStatus.reviews,
     // });
+
+    // await say({
+    //   channel: "#kitchen-gossip",
+    //   text: "Here's what's cooking:",
+    //   blocks: reviewBlocks,
+    // });
+
+    const endBlocks = getEndBlocks();
+
+    await say({
+      channel: "#kitchen-gossip",
+      text: "Last message:",
+      blocks: endBlocks,
+    });
   } catch (error) {
     console.error("Error handling /whatscooking command:", error);
     await respond({

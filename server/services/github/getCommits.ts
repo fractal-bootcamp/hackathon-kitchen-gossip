@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import { CommitSummary } from "../../types/CommitSummary";
 import { sampleCommits } from "../../data/sampleCommits";
 import { AppConfig } from "../../config/AppConfig";
@@ -6,7 +6,7 @@ import { getEnv } from "../../utils/getEnv";
 // import { SLEEP_TIMES, sleep } from "../../utils/sleep";
 import { getCommitsViaGraph } from "./graphQL";
 import { getAllRepos } from "./getRepos";
-dotenv.config();
+// dotenv.config();
 
 /**
  * Calls GitHub to get recent commits.
