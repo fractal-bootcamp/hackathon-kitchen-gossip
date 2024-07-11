@@ -27,6 +27,8 @@ const boltApp = new App({
   receiver: expressReceiver,
 });
 
+console.log(boltApp);
+
 const exApp = express();
 exApp.use(express.json());
 exApp.use(cors());
