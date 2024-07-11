@@ -28,7 +28,14 @@ exApp.use(express.json());
 exApp.use(cors());
 
 // Use Bolt's express middleware to handle Slack events
-exApp.use("/slack/events", boltApp.receiver.router);
+exApp.use("/slack/events", async (req, res, next) => {
+  if (req.body.type === "url_verification") {
+    res.status(200).send(req.body.challenge);
+  } else {
+    // Pass the request to Bolt's receiver router for other event types
+    boltApp.receiver.router(req, res, next);
+  }
+});
 
 exApp.get("/express/heartbeat", async (req, res) => {
   const resMessage = "hello world";
