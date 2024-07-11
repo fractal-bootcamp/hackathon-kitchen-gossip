@@ -6,7 +6,10 @@ import { getRecentCommits } from "./services/github/getCommits";
 import { CommitSummary } from "./types/CommitSummary";
 const { App, ExpressReceiver } = require("@slack/bolt");
 
-const PORT = process.env.SERVER_PORT || 3000;
+const PORT = process.env.SERVER_PORT || 10000;
+// The default value of PORT is 10000 for all Render web services.
+// You can override this value by setting the environment variable
+// in the Render Dashboard.
 
 const expressReceiver = new ExpressReceiver({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
