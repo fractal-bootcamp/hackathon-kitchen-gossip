@@ -1,7 +1,7 @@
 export const getName = (username: string): string => {
   switch (username) {
     case "briansmiley":
-      return "@Brian";
+      return "<@U075SN59RMM>";
     case "brunoLloret":
       return "<@U07675V6CUB>";
     case "elizasvielelizasviel":
@@ -14,8 +14,12 @@ export const getName = (username: string): string => {
       return "<@U076W321UJC>";
     case "yayakixtenet":
     case "yayakix":
-      return "@Iyana";
+      return "<@U076KUTQRR7>";
     default:
+      console.log(
+        "name not identified by getName function, just returning:",
+        username
+      );
       return username;
   }
 };

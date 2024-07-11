@@ -37,6 +37,7 @@
 
 ## Other
 
+1. Use main branch on Render, not experimental
 1. Tidy up /server/slack files - currently lots of obsolete commentcode
 1. Work out why Render sometimes complains about the PORT allocation and takes a while to deploy
 
