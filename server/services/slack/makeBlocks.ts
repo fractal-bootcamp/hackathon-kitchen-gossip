@@ -3,19 +3,19 @@ export const getStartBlocks = (commitCount: number, ageMaxHrs: number) => [
     type: "header",
     text: {
       type: "plain_text",
-      text: "🍽️ Here we go! 🍽️",
+      text: "💚🍽️💚 Here we go! 💚🍽️💚",
       emoji: true,
     },
   },
-  {
-    type: "context",
-    elements: [
-      {
-        type: "mrkdwn",
-        text: `🕒 *${commitCount} commits* in the last ${ageMaxHrs} hours`,
-      },
-    ],
-  },
+  // {
+  //   type: "context",
+  //   elements: [
+  //     {
+  //       type: "mrkdwn",
+  //       text: `🕒 *${commitCount} commits* in the last ${ageMaxHrs} hours`,
+  //     },
+  //   ],
+  // },
 ];
 
 export const getEndBlocks = () => [
