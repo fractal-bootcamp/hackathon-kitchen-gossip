@@ -43,7 +43,7 @@ const boltApp = new App({
 });
 
 // Use Bolt's express middleware to handle Slack events
-exApp.use("/slack/events", async (req, res, next) => {
+exApp.post("/slack/events", async (req, res, next) => {
   console.log("/slack/events request received", req.body);
   if (req.body.type === "url_verification") {
     res.status(200).send(req.body.challenge);
@@ -52,6 +52,17 @@ exApp.use("/slack/events", async (req, res, next) => {
     boltApp.receiver.router(req, res, next);
   }
 });
+
+// // Use Bolt's express middleware to handle Slack events
+// exApp.use("/slack/events", async (req, res, next) => {
+//   console.log("/slack/events request received", req.body);
+//   if (req.body.type === "url_verification") {
+//     res.status(200).send(req.body.challenge);
+//   } else {
+//     // Pass the request to Bolt's receiver router for other event types
+//     boltApp.receiver.router(req, res, next);
+//   }
+// });
 
 exApp.get("/express/heartbeat", async (req, res) => {
   const resMessage = "hello world 78";
