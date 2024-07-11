@@ -63,7 +63,11 @@ export const getCommitsViaGraph = async (
   console.log("getCommitsViaGraph called", ownerSlashRepo);
   const [owner, repo] = ownerSlashRepo.split("/");
   const token = process.env.GITHUB_AUTH_KEY;
+  console.log(
+    "getCommitsViaGraph DEBUG: owner/token/repo all distinguished fine"
+  );
   const query = buildGraphQuery(owner, repo);
+  console.log("getCommitsViaGraph DEBUG: query built");
   try {
     const response = await fetch("https://api.github.com/graphql", {
       method: "POST",
