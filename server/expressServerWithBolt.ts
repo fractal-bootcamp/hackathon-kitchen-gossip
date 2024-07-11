@@ -38,7 +38,7 @@ exApp.use("/slack/events", async (req, res, next) => {
 });
 
 exApp.get("/express/heartbeat", async (req, res) => {
-  const resMessage = "hello world";
+  const resMessage = "hello world 78";
   console.log("GET request to /express/heartbeat");
   res.json({ message: resMessage });
 });
