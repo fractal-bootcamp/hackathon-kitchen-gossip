@@ -104,6 +104,13 @@ export async function getReviewStatus(
   owner?: string,
   repo?: string
 ): Promise<ReviewStatus> {
+  console.log(
+    "getReviewStatus called with. Optional params are owner:",
+    owner,
+    "and repo:",
+    repo
+  );
+
   // Step 1 - get recent commits from GitHub
   const commits = await getRecentCommits(owner, repo, 12);
 

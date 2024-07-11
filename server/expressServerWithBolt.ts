@@ -43,7 +43,7 @@ const boltApp = new App({
 
 // Use Bolt's express middleware to handle Slack events
 exApp.post("/slack/events", async (req, res, next) => {
-  console.log("/slack/events request received", req.body);
+  console.log("/slack/events request received");
   if (req.body.type === "url_verification") {
     res.status(200).send(req.body.challenge);
   } else {
@@ -68,18 +68,18 @@ boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
   await ack();
 
   try {
-    console.log("/whatscooking", command);
-    console.log("ack() has happened");
-    await respond(`Let me go look in the kitchen and find out!`);
+    console.log("/whatscooking command received, ack() has happened");
+    await respond(`Request received!`);
 
     // Send a message to the channel
     await say({
       channel: command.channel_id, // Use the channel ID from the command
-      text: "Yo Dorothy I think we cracked it!",
+      text: "<@${command.user_id}> you wanna know what's cooking? Let me go check.",
     });
 
     // Get summary of user reviews
     // This is the master call that triggers all the other sub calls
+    console.log("Triggering call to getReviewStatus from router.");
     const reviewStatus: ReviewStatus = await getReviewStatus(
       "fractal-bootcamp"
     );
