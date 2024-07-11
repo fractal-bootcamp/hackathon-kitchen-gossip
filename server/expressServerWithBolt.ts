@@ -4,7 +4,12 @@ import { getReviewStatus } from "./services/reviewer";
 import { ReviewStatus } from "./types/shared";
 import { getRecentCommits } from "./services/github/getCommits";
 import { CommitSummary } from "./types/CommitSummary";
-import { makeSlackBlocks } from "./services/slack/makeBlocks";
+import {
+  getEndBlocks,
+  getReviewBlock,
+  getStartBlocks,
+  makeReviewBlocks,
+} from "./services/slack/makeBlocks";
 const { App, ExpressReceiver } = require("@slack/bolt");
 
 const PORT = process.env.SERVER_PORT || 3000;
@@ -82,13 +87,29 @@ boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
     // This is the master call that triggers all the other sub calls
     console.log("Triggering call to getReviewStatus from router.");
     const reviewStatus: ReviewStatus = await getReviewStatus(
-      "fractal-bootcamp",
-      "hackathon-kitchen-gossip"
+      "fractal-bootcamp"
     );
 
     console.log("reviewStatus received.");
 
-    const gossip = await makeSlackBlocks(reviewStatus.reviews);
+    const startBlocks = getStartBlocks(99, 99);
+
+    await say({
+      channel: "#kitchen-gossip",
+      text: "First message:",
+      blocks: startBlocks,
+    });
+
+    for (const review of reviewStatus.reviews) {
+      const reviewBlock = getReviewBlock(review);
+      await say({
+        channel: "#kitchen-gossip",
+        text: "Here's what's cooking:",
+        blocks: reviewBlock,
+      });
+    }
+
+    // const reviewBlocks = await makeReviewBlocks(reviewStatus.reviews);
 
     // await say(`## Reviews Status\n${reviewStatus.reviews}`);
     // await say({
@@ -96,10 +117,18 @@ boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
     //   text: reviewStatus.reviews,
     // });
 
+    // await say({
+    //   channel: "#kitchen-gossip",
+    //   text: "Here's what's cooking:",
+    //   blocks: reviewBlocks,
+    // });
+
+    const endBlocks = getEndBlocks();
+
     await say({
       channel: "#kitchen-gossip",
-      text: "Here's what's cooking:",
-      blocks: gossip,
+      text: "Last message:",
+      blocks: endBlocks,
     });
   } catch (error) {
     console.error("Error handling /whatscooking command:", error);
