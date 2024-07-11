@@ -20,6 +20,10 @@ const boltApp = new App({
   token: process.env.SLACK_BOT_TOKEN,
   // signingSecret: process.env.SLACK_SIGNING_SECRET,
   // Use the expressReceiver to handle incoming HTTP requests
+  endpoints: {
+    events: "slack/events",
+    commands: "slack/commands",
+  },
   receiver: expressReceiver,
 });
 
