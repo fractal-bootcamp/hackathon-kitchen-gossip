@@ -4,6 +4,7 @@ import { getReviewStatus } from "./services/reviewer";
 import { ReviewStatus } from "./types/shared";
 import { getRecentCommits } from "./services/github/getCommits";
 import { CommitSummary } from "./types/CommitSummary";
+import { generateKitchenGossip } from "./services/slack/bot";
 const { App, ExpressReceiver } = require("@slack/bolt");
 
 const PORT = process.env.SERVER_PORT || 3000;
@@ -77,23 +78,25 @@ boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
       text: "Yo Dorothy I think we cracked it!",
     });
 
-    // // Get summary of user reviews
-    // // This is the master call that triggers all the other sub calls
-    // const reviewStatus: ReviewStatus = await getReviewStatus();
-    // // await postText(reviewStatus.reviews)
+    // Get summary of user reviews
+    // This is the master call that triggers all the other sub calls
+    const reviewStatus: ReviewStatus = await getReviewStatus(
+      "fractal-bootcamp"
+    );
 
-    // const gossip = await generateKitchenGossip(reviewStatus.reviews);
+    const gossip = await generateKitchenGossip(reviewStatus.reviews);
 
-    // // await say(`## Reviews Status\n${reviewStatus.reviews}`)
-    // // await say({
-    // //   channel: "#kitchen-gossip",
-    // //   text: reviewStatus.reviews,
-    // // })
-    // await say({
-    //   channel: "#kitchen-gossip",
-    //   text: "Here is the latest kitchen gossip!",
-    //   blocks: gossip,
-    // });
+    await say(`## Reviews Status\n${reviewStatus.reviews}`);
+    await say({
+      channel: "#kitchen-gossip",
+      text: reviewStatus.reviews,
+    });
+
+    await say({
+      channel: "#kitchen-gossip",
+      text: "Here's what's cooking:",
+      blocks: gossip,
+    });
   } catch (error) {
     console.error("Error handling /whatscooking command:", error);
     await respond({
