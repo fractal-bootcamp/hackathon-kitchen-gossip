@@ -13,10 +13,6 @@ const PORT = process.env.SERVER_PORT || 3000;
 // You can override this value by setting the environment variable
 // in the Render Dashboard.
 
-const exApp = express();
-exApp.use(express.json());
-exApp.use(cors());
-
 // // LOGGING MIDDLEWARE
 // exApp.use((req, res, next) => {
 //   console.log("Request Body Length:", req.body.length);
@@ -29,6 +25,10 @@ exApp.use(cors());
 const expressReceiver = new ExpressReceiver({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
 });
+
+const exApp = expressReceiver.app;
+exApp.use(express.json());
+exApp.use(cors());
 
 const boltApp = new App({
   token: process.env.SLACK_BOT_TOKEN,
