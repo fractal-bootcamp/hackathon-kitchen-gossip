@@ -81,7 +81,8 @@ boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
     // This is the master call that triggers all the other sub calls
     console.log("Triggering call to getReviewStatus from router.");
     const reviewStatus: ReviewStatus = await getReviewStatus(
-      "fractal-bootcamp"
+      "fractal-bootcamp",
+      "hackathon-kitchen-gossip"
     );
 
     console.log("reviewStatus received.");
