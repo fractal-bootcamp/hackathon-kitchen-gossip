@@ -63,13 +63,19 @@ boltApp.event("message", async ({ event, say }) => {
 });
 
 // Add a command listener for /whatscooking
-boltApp.command("/whatscooking", async ({ command, ack, respond }) => {
+boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
   await ack();
 
   try {
     console.log("/whatscooking", command);
     console.log("ack() has happened");
     await respond(`Let me go look in the kitchen and find out!`);
+
+    // Send a message to the channel
+    await say({
+      channel: command.channel_id, // Use the channel ID from the command
+      text: "Yo Dorothy I think we cracked it!",
+    });
 
     // // Get summary of user reviews
     // // This is the master call that triggers all the other sub calls
