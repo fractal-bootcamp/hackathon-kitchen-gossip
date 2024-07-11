@@ -79,3 +79,38 @@ exApp.listen(PORT, () => {
 boltApp.event("message", async ({ event, say }) => {
   await say(`You said: ${event.text}`);
 });
+
+// Add a command listener for /whatscooking
+boltApp.command("/whatscooking", async ({ command, ack, respond }) => {
+  console.log("/whatscooking", command);
+
+  try {
+    await ack();
+    console.log("ack() has happened");
+    await respond(`Here's what's cooking!`);
+
+    // // Get summary of user reviews
+    // // This is the master call that triggers all the other sub calls
+    // const reviewStatus: ReviewStatus = await getReviewStatus();
+    // // await postText(reviewStatus.reviews)
+
+    // const gossip = await generateKitchenGossip(reviewStatus.reviews);
+
+    // // await say(`## Reviews Status\n${reviewStatus.reviews}`)
+    // // await say({
+    // //   channel: "#kitchen-gossip",
+    // //   text: reviewStatus.reviews,
+    // // })
+    // await say({
+    //   channel: "#kitchen-gossip",
+    //   text: "Here is the latest kitchen gossip!",
+    //   blocks: gossip,
+    // });
+  } catch (error) {
+    console.error("Error handling /whatscooking command:", error);
+    await respond({
+      response_type: "ephemeral",
+      text: "There was an error processing your request. Please try again later.",
+    });
+  }
+});
