@@ -4,7 +4,7 @@ import { getReviewStatus } from "./services/reviewer";
 import { ReviewStatus } from "./types/shared";
 import { getRecentCommits } from "./services/github/getCommits";
 import { CommitSummary } from "./types/CommitSummary";
-import { generateKitchenGossip } from "./services/slack/bot";
+import { makeSlackBlocks } from "./services/slack/makeBlocks";
 const { App, ExpressReceiver } = require("@slack/bolt");
 
 const PORT = process.env.SERVER_PORT || 3000;
@@ -72,11 +72,11 @@ boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
     console.log("/whatscooking command received, ack() has happened");
     await respond(`Request received!`);
 
-    // // Send a message to the channel
-    // await say({
-    //   channel: command.channel_id, // Use the channel ID from the command
-    //   text: `<@${command.user_id}> you wanna know what's cooking? Let me go check.`,
-    // });
+    // Send a message to the channel
+    await say({
+      channel: command.channel_id, // Use the channel ID from the command
+      text: `<@${command.user_id}> you wanna know what's cooking? Let me go check.`,
+    });
 
     // Get summary of user reviews
     // This is the master call that triggers all the other sub calls
@@ -88,7 +88,7 @@ boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
 
     console.log("reviewStatus received.");
 
-    const gossip = await generateKitchenGossip(reviewStatus.reviews);
+    const gossip = await makeSlackBlocks(reviewStatus.reviews);
 
     // await say(`## Reviews Status\n${reviewStatus.reviews}`);
     // await say({
