@@ -9,18 +9,18 @@
 // },
 
 export type GithubStatus = {
-  user: string
-  date: string
-  message: string
-  status: string
-  commit: string
-  branch: string
-  pass: boolean
-}
+  user: string;
+  date: string;
+  message: string;
+  status: string;
+  commit: string;
+  branch: string;
+  pass: boolean;
+};
 
-export type GithubStatusList = GithubStatus[]
+export type GithubStatusList = GithubStatus[];
 
 export type ReviewStatus = {
-  reviews: string
-  users: string[]
-}
+  reviews: string[];
+  users: string[];
+};

@@ -54,7 +54,7 @@ export function transformStatus(status: GithubStatus): string {
  * to the evaluateCommits function (which calls LLM), and then returns
  * a single string of LLM-generated reviews.
  */
-async function reviewCommits(commits: CommitsByUser[]): Promise<string> {
+async function reviewCommits(commits: CommitsByUser[]): Promise<string[]> {
   console.log("reviewCommits started with", commits.length, "commits");
   const reviews: string[] = [];
 
@@ -63,9 +63,9 @@ async function reviewCommits(commits: CommitsByUser[]): Promise<string> {
     reviews.push(userReview);
   }
 
-  console.log("result:", reviews);
-  const results = reviews.join("\n\n");
-  return results;
+  // console.log("result:", reviews);
+  // const results = reviews.join("\n\n");
+  return reviews;
 }
 
 /**
@@ -123,7 +123,7 @@ export async function getReviewStatus(
 
   // Step 3 - Send commit data to OpenAI user by user and received back
   // LLM-generated reviews
-  const reviews: string = await reviewCommits(commitsByUser);
+  const reviews: string[] = await reviewCommits(commitsByUser);
   console.log(`inside getReviewStatus: reviewCommits has completed`);
 
   // Step 4 - Combine the reviews back with the usernames and return to Slack

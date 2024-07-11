@@ -1,3 +1,46 @@
+export const getStartBlocks = (commitCount: number, ageMaxHrs: number) => [
+  {
+    type: "header",
+    text: {
+      type: "plain_text",
+      text: "🍽️ Here we go! 🍽️",
+      emoji: true,
+    },
+  },
+  {
+    type: "context",
+    elements: [
+      {
+        type: "mrkdwn",
+        text: `🕒 *${commitCount} commits* in the last ${ageMaxHrs} hours`,
+      },
+    ],
+  },
+];
+
+export const getEndBlocks = () => [
+  // Add some randomizing logic in here at some point!
+  {
+    type: "header",
+    text: {
+      type: "plain_text",
+      text: "💚🍳💚 Yum Yum! 💚😍💚",
+      emoji: true,
+    },
+  },
+];
+
+export const getReviewBlock = (review: string) => [
+  // Add some randomizing logic in here at some point!
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: review,
+    },
+  },
+];
+
 /**
  * Currently this takes in a single string and returns all reviews in a single block. This is weak.
  * We should return an array of blocks, and in the server response to Slack stagger the responses
@@ -5,7 +48,7 @@
  * @param reviews
  * @returns
  */
-export async function makeSlackBlocks(reviews: string): Promise<any[]> {
+async function makeReviewBlocks(reviews: string[]): Promise<any[]> {
   return [
     {
       type: "header",
