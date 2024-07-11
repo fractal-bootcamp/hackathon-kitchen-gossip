@@ -32,6 +32,7 @@ const expressReceiver = new ExpressReceiver({
 
 const boltApp = new App({
   token: process.env.SLACK_BOT_TOKEN,
+  socketMode: false,
   // signingSecret: process.env.SLACK_SIGNING_SECRET,
   // Use the expressReceiver to handle incoming HTTP requests
   endpoints: {
@@ -58,10 +59,10 @@ exApp.get("/express/heartbeat", async (req, res) => {
   res.json({ message: resMessage });
 });
 
-// Example of a Bolt event listener
-boltApp.event("message", async ({ event, say }) => {
-  await say(`You said: ${event.text}`);
-});
+// // Example of a Bolt event listener
+// boltApp.event("message", async ({ event, say }) => {
+//   await say(`You said: ${event.text}`);
+// });
 
 // Add a command listener for /whatscooking
 boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
