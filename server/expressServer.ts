@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/express/heartbeat", async (req, res) => {
-  const resMessage = "hello world";
+  const resMessage = "hello world - version 77";
   console.log("GET request to /express/heartbeat");
   res.json({ message: resMessage });
 });
