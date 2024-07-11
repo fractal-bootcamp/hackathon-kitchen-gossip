@@ -84,6 +84,8 @@ boltApp.command("/whatscooking", async ({ command, ack, respond, say }) => {
       "fractal-bootcamp"
     );
 
+    console.log("reviewStatus received.");
+
     const gossip = await generateKitchenGossip(reviewStatus.reviews);
 
     await say(`## Reviews Status\n${reviewStatus.reviews}`);
